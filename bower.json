@@ -1,0 +1,21 @@
+{
+  "name": "aurelia-testing",
+  "version": "0.1.0",
+  "description": "A collection of helpers for testing Aurelia apps and components.",
+  "keywords": [
+    "aurelia",
+    "cache"
+  ],
+  "homepage": "http://aurelia.io",
+  "license": "MIT",
+  "authors": [
+    "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/aurelia/testing"
+  },
+  "dependencies": {
+
+  }
+}
