@@ -12,17 +12,22 @@
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "dist/commonjs/testing.js",
+  "main": "dist/commonjs/aurelia-testing.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/aurelia/testing"
   },
   "jspmNodeConversion": false,
   "jspm": {
-    "main": "testing",
+    "registry": "npm",
+    "jspmPackage": true,
+    "main": "aurelia-testing",
     "format": "amd",
     "directories": {
-      "lib": "dist/amd"
+      "dist": "dist/amd"
+    },
+    "peerDependencies": {
+
     },
     "dependencies": {
 
