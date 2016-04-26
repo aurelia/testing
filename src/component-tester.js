@@ -1,51 +1,84 @@
-import {bootstrap} from 'aurelia-bootstrapper';
-
-export const StageComponent = {
-  withResources(resources): ComponentTester {
-    return new ComponentTester().withResources(resources);
-  }
-};
+import $ from "jquery";
+import _ from "lodash";
+import {Origin} from "aurelia-metadata";
+import {bootstrap as webpackBootstrap} from "aurelia-bootstrapper-webpack";
+import {TaskQueue} from "aurelia-framework";
 
 export class ComponentTester {
-  _html: string;
-  _resources: string | string[] = [];
-  _bindingContext: any;
-  _configure = aurelia => aurelia.use.standardConfiguration();
+
+  resources = [];
+  html;
+  bindingContext;
   element;
+  container;
+  viewModel;
+  view;
+  config;
 
-  bootstrap(configure: (aurelia: Aurelia) => void) {
-    this._configure = configure;
+  static load(config) {
+    let componentTester = new ComponentTester(config);
+    return componentTester
+      .start()
+      .then(()=> Promise.resolve(componentTester));
   }
 
-  withResources(resources): ComponentTester {
-    this._resources = resources;
-    return this;
+  constructor(config) {
+    this.config = config;
+    this.html = config.markup;
+    this.bindingContext = {};
   }
 
-  inView(html): ComponentTester {
-    this._html = html;
-    return this;
+  configure(aurelia) {
+    aurelia.use.standardConfiguration();
+
+    if (this.config.type) {
+      this.resources = _.isFunction(this.config.type) ? Origin.get(this.config.type).moduleId : this.config.type;
+    }
+    if (this.config.mocks) {
+      this.config.mocks(this.container);
+    }
+    if (this.config.setupBindingContext) {
+      this.config.setupBindingContext(this.bindingContext, this.container);
+    }
   }
 
-  boundTo(bindingContext): ComponentTester {
-    this._bindingContext = bindingContext;
-    return this;
+  flushTaskQueues() {
+    let queue = this.container.get(TaskQueue);
+    queue.flushTaskQueue();
+    queue.flushMicroTaskQueue();
   }
 
-  create(): Promise<void> {
-    return bootstrap(aurelia => {
-      return Promise.resolve(this._configure(aurelia)).then(() => {
-        aurelia.use.globalResources(this._resources);
+  dispose(done) {
+    this.element.au.controller.unbind();
+    this.element.au.controller.detached();
+    this.element.au.controller.view.removeNodes();
+    this.element.remove();
 
-        return aurelia.start().then(a => {
-          let host = document.createElement('div');
-          host.innerHTML = this._html;
+    if (done) {
+      done();
+    }
+  }
 
-          document.body.appendChild(host);
-          aurelia.enhance(this._bindingContext, host);
+  createView(aurelia) {
+    let host = document.createElement('div');
+    host.innerHTML = this.html;
 
-          this.element = host.firstElementChild;
-        });
+    document.body.appendChild(host);
+    aurelia.enhance(this.bindingContext, host);
+
+    this.element = host.firstElementChild;
+    this.$el = $(this.element);
+    this.viewModel = this.element.au.controller.viewModel;
+    this.view = this.element.au.controller.view;
+    this.flushTaskQueues();
+  }
+
+  start() {
+    return webpackBootstrap(aurelia => {
+      this.container = aurelia.container;
+      return Promise.resolve(this.configure(aurelia)).then(() => {
+        aurelia.use.globalResources(this.resources);
+        return aurelia.start().then(()=>this.createView(aurelia));
       });
     });
   }
