@@ -26,7 +26,7 @@
     "directories": {
       "dist": "dist/amd"
     },
-    "dependencies": {
+    "peerDependencies": {
       "aurelia-bootstrapper": "^1.0.0-beta.1.2.0",
       "aurelia-templating": "^1.0.0-beta.1.2.4"
     },
@@ -36,7 +36,10 @@
       "core-js": "^1.1.4"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "aurelia-bootstrapper": "^1.0.0-beta.1.2.0",
+    "aurelia-templating": "^1.0.0-beta.1.2.4"
+  },
   "devDependencies": {
     "aurelia-tools": "^0.1.12",
     "babel-dts-generator": "^0.4.7",
