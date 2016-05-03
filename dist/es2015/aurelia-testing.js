@@ -1,51 +1,45 @@
-import {bootstrap} from 'aurelia-bootstrapper';
-import {View} from 'aurelia-templating';
-import {Aurelia} from 'aurelia-framework';
+import { bootstrap } from 'aurelia-bootstrapper';
+import { View } from 'aurelia-templating';
+import { Aurelia } from 'aurelia-framework';
 
 export const StageComponent = {
-  withResources(resources): ComponentTester {
+  withResources(resources) {
     return new ComponentTester().withResources(resources);
   }
 };
 
-export class ComponentTester {
-  bind: (bindingContext: any) => void;
-  attached: () => void;
-  unbind: () => void;
-  dispose: () => Promise<any>;
-  element: Element;
-  viewModel: any;
-  _html: string;
-  _resources: string | string[] = [];
-  _bindingContext: any;
-  _rootView: View;
-  _configure = aurelia => aurelia.use.standardConfiguration();
+export let ComponentTester = class ComponentTester {
+  constructor() {
+    this._resources = [];
 
-  bootstrap(configure: (aurelia: Aurelia) => void) {
+    this._configure = aurelia => aurelia.use.standardConfiguration();
+  }
+
+  bootstrap(configure) {
     this._configure = configure;
   }
 
-  withResources(resources: string | string[]): ComponentTester {
+  withResources(resources) {
     this._resources = resources;
     return this;
   }
 
-  inView(html: string): ComponentTester {
+  inView(html) {
     this._html = html;
     return this;
   }
 
-  boundTo(bindingContext: any): ComponentTester {
+  boundTo(bindingContext) {
     this._bindingContext = bindingContext;
     return this;
   }
 
-  manuallyHandleLifecycle(): ComponentTester {
+  manuallyHandleLifecycle() {
     this._prepareLifecycle();
     return this;
   }
 
-  create(): Promise<void> {
+  create() {
     return bootstrap(aurelia => {
       return Promise.resolve(this._configure(aurelia)).then(() => {
         aurelia.use.globalResources(this._resources);
@@ -65,7 +59,6 @@ export class ComponentTester {
   }
 
   _prepareLifecycle() {
-    // bind
     const bindPrototype = View.prototype.bind;
     View.prototype.bind = () => {};
     this.bind = bindingContext => new Promise(resolve => {
@@ -77,7 +70,6 @@ export class ComponentTester {
       setTimeout(() => resolve(), 0);
     });
 
-    // attached
     const attachedPrototype = View.prototype.attached;
     View.prototype.attached = () => {};
     this.attached = () => new Promise(resolve => {
@@ -86,16 +78,14 @@ export class ComponentTester {
       setTimeout(() => resolve(), 0);
     });
 
-    // detached
     this.detached = () => new Promise(resolve => {
       this._rootView.detached();
       setTimeout(() => resolve(), 0);
     });
 
-    // unbind
     this.unbind = () => new Promise(resolve => {
       this._rootView.unbind();
       setTimeout(() => resolve(), 0);
     });
   }
-}
+};

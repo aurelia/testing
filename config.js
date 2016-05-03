@@ -14,6 +14,7 @@ System.config({
 
   map: {
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.0-beta.1.2.0",
+    "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.2.2",
     "aurelia-templating": "npm:aurelia-templating@1.0.0-beta.1.2.4",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",

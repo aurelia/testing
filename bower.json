@@ -1,6 +1,6 @@
 {
   "name": "aurelia-testing",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A collection of helpers for testing Aurelia apps and components.",
   "keywords": [
     "aurelia",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "aurelia-bootstrapper": "^1.0.0-beta.1.2.0",
-    "aurelia-templating": "^1.0.0-beta.1.2.4"
+    "aurelia-templating": "^1.0.0-beta.1.2.4",
+    "aurelia-framework": "^1.0.0-beta.1.2.2"
   }
 }
