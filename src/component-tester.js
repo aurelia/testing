@@ -8,10 +8,10 @@ export const StageComponent = {
 };
 
 export class ComponentTester {
-  bind: {(bindingContext: any): void };
-  attached: {(): void };
-  unbind: {(): void };
-  dispose: {(): Promise<any> };
+  bind: (bindingContext: any) => void;
+  attached: () => void;
+  unbind: () => void;
+  dispose: () => Promise<any>;
   element: Element;
   viewModel: any;
   _html: string;
