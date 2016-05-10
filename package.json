@@ -1,6 +1,6 @@
 {
   "name": "aurelia-testing",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A collection of helpers for testing Aurelia apps and components.",
   "keywords": [
     "aurelia",
