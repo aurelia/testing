@@ -15,7 +15,7 @@
       },
       "children": [
         {
-          "id": 21,
+          "id": 22,
           "name": "_bindingContext",
           "kind": 1024,
           "kindString": "Property",
@@ -28,20 +28,7 @@
           }
         },
         {
-          "id": 23,
-          "name": "_configure",
-          "kind": 1024,
-          "kindString": "Property",
-          "flags": {
-            "isExported": true
-          },
-          "type": {
-            "type": "instrinct",
-            "name": "any"
-          }
-        },
-        {
-          "id": 19,
+          "id": 20,
           "name": "_html",
           "kind": 1024,
           "kindString": "Property",
@@ -54,7 +41,7 @@
           }
         },
         {
-          "id": 20,
+          "id": 21,
           "name": "_resources",
           "kind": 1024,
           "kindString": "Property",
@@ -77,7 +64,7 @@
           }
         },
         {
-          "id": 22,
+          "id": 23,
           "name": "_rootView",
           "kind": 1024,
           "kindString": "Property",
@@ -87,7 +74,7 @@
           "type": {
             "type": "reference",
             "name": "View",
-            "id": 2070,
+            "id": 2519,
             "moduleName": "\"aurelia-templating\""
           }
         },
@@ -166,6 +153,19 @@
                 }
               ]
             }
+          }
+        },
+        {
+          "id": 19,
+          "name": "configure",
+          "kind": 1024,
+          "kindString": "Property",
+          "flags": {
+            "isExported": true
+          },
+          "type": {
+            "type": "instrinct",
+            "name": "any"
           }
         },
         {
@@ -511,13 +511,13 @@
           "title": "Properties",
           "kind": 1024,
           "children": [
+            22,
+            20,
             21,
             23,
-            19,
-            20,
-            22,
             8,
             4,
+            19,
             14,
             17,
             11,

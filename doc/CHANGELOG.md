@@ -1,3 +1,11 @@
+### 0.2.2 (2016-05-17)
+
+
+#### Features
+
+* **component-tester:** make configure function public ([b17e4ac0](http://github.com/aurelia/testing/commit/b17e4ac0e6dac2af8fb0ef75261677744982ee99))
+
+
 ### 0.2.1 (2016-05-10)
 
 

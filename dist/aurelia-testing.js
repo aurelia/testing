@@ -15,14 +15,14 @@ export class ComponentTester {
   dispose: () => Promise<any>;
   element: Element;
   viewModel: any;
+  configure = aurelia => aurelia.use.standardConfiguration();
   _html: string;
   _resources: string | string[] = [];
   _bindingContext: any;
   _rootView: View;
-  _configure = aurelia => aurelia.use.standardConfiguration();
 
   bootstrap(configure: (aurelia: Aurelia) => void) {
-    this._configure = configure;
+    this.configure = configure;
   }
 
   withResources(resources: string | string[]): ComponentTester {
@@ -47,7 +47,7 @@ export class ComponentTester {
 
   create(): Promise<void> {
     return bootstrap(aurelia => {
-      return Promise.resolve(this._configure(aurelia)).then(() => {
+      return Promise.resolve(this.configure(aurelia)).then(() => {
         aurelia.use.globalResources(this._resources);
         return aurelia.start().then(a => {
           let host = document.createElement('div');

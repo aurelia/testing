@@ -16,11 +16,11 @@ declare module 'aurelia-testing' {
     dispose: (() => Promise<any>);
     element: Element;
     viewModel: any;
+    configure: any;
     _html: string;
     _resources: string | string[];
     _bindingContext: any;
     _rootView: View;
-    _configure: any;
     bootstrap(configure: ((aurelia: Aurelia) => void)): any;
     withResources(resources: string | string[]): ComponentTester;
     inView(html: string): ComponentTester;

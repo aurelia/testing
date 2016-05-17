@@ -10,13 +10,13 @@ export const StageComponent = {
 
 export let ComponentTester = class ComponentTester {
   constructor() {
-    this._resources = [];
+    this.configure = aurelia => aurelia.use.standardConfiguration();
 
-    this._configure = aurelia => aurelia.use.standardConfiguration();
+    this._resources = [];
   }
 
   bootstrap(configure) {
-    this._configure = configure;
+    this.configure = configure;
   }
 
   withResources(resources) {
@@ -41,7 +41,7 @@ export let ComponentTester = class ComponentTester {
 
   create() {
     return bootstrap(aurelia => {
-      return Promise.resolve(this._configure(aurelia)).then(() => {
+      return Promise.resolve(this.configure(aurelia)).then(() => {
         aurelia.use.globalResources(this._resources);
         return aurelia.start().then(a => {
           let host = document.createElement('div');

@@ -30,15 +30,15 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
         function ComponentTester() {
           _classCallCheck(this, ComponentTester);
 
-          this._resources = [];
-
-          this._configure = function (aurelia) {
+          this.configure = function (aurelia) {
             return aurelia.use.standardConfiguration();
           };
+
+          this._resources = [];
         }
 
         ComponentTester.prototype.bootstrap = function bootstrap(configure) {
-          this._configure = configure;
+          this.configure = configure;
         };
 
         ComponentTester.prototype.withResources = function withResources(resources) {
@@ -65,7 +65,7 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
           var _this = this;
 
           return bootstrap(function (aurelia) {
-            return Promise.resolve(_this._configure(aurelia)).then(function () {
+            return Promise.resolve(_this.configure(aurelia)).then(function () {
               aurelia.use.globalResources(_this._resources);
               return aurelia.start().then(function (a) {
                 var host = document.createElement('div');
