@@ -62,6 +62,7 @@
     "gulp-bump": "^0.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.0.0",
+    "gulp-ignore": "^2.0.1",
     "gulp-insert": "^0.4.0",
     "gulp-rename": "^1.2.2",
     "gulp-typedoc": "^1.2.1",
