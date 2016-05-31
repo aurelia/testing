@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['aurelia-templating', 'aurelia-logging'], function (_export, _context) {
+  "use strict";
+
   var customAttribute, LogManager, _dec, _class, ViewSpy;
 
   function _classCallCheck(instance, Constructor) {

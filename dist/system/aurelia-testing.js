@@ -1,12 +1,25 @@
 'use strict';
 
-System.register([], function (_export, _context) {
+System.register(['./compile-spy', './view-spy'], function (_export, _context) {
+  "use strict";
+
+  var CompileSpy, ViewSpy;
+
+
+  function configure(config) {
+    config.globalResources('./compile-spy', './view-spy');
+  }
+
   return {
-    setters: [],
+    setters: [function (_compileSpy) {
+      CompileSpy = _compileSpy.CompileSpy;
+    }, function (_viewSpy) {
+      ViewSpy = _viewSpy.ViewSpy;
+    }],
     execute: function () {
-      function configure(config) {
-        config.globalResources('./compile-spy', './view-spy');
-      }
+      _export('CompileSpy', CompileSpy);
+
+      _export('ViewSpy', ViewSpy);
 
       _export('configure', configure);
     }

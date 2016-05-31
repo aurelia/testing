@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framework'], function (_export, _context) {
+  "use strict";
+
   var bootstrap, View, Aurelia, StageComponent, ComponentTester;
 
   function _classCallCheck(instance, Constructor) {

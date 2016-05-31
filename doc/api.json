@@ -6,6 +6,89 @@
   "flags": {},
   "children": [
     {
+      "id": 58,
+      "name": "CompileSpy",
+      "kind": 128,
+      "kindString": "Class",
+      "flags": {
+        "isExported": true
+      },
+      "comment": {
+        "shortText": "Attribute to be placed on any element to have it emit the View Compiler's\nTargetInstruction into the debug console, giving you insight into all the\nparsed bindings, behaviors and event handers for the targeted element."
+      },
+      "children": [
+        {
+          "id": 59,
+          "name": "constructor",
+          "kind": 512,
+          "kindString": "Constructor",
+          "flags": {
+            "isExported": true
+          },
+          "comment": {
+            "shortText": "Creates and instanse of CompileSpy."
+          },
+          "signatures": [
+            {
+              "id": 60,
+              "name": "new CompileSpy",
+              "kind": 16384,
+              "kindString": "Constructor signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Creates and instanse of CompileSpy."
+              },
+              "parameters": [
+                {
+                  "id": 61,
+                  "name": "element",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "shortText": "target element on where attribute is placed on."
+                  },
+                  "type": {
+                    "type": "instrinct",
+                    "name": "any"
+                  }
+                },
+                {
+                  "id": 62,
+                  "name": "instruction",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "shortText": "instructions for how the target element should be enhanced.\n"
+                  },
+                  "type": {
+                    "type": "instrinct",
+                    "name": "any"
+                  }
+                }
+              ],
+              "type": {
+                "type": "reference",
+                "name": "CompileSpy",
+                "id": 58,
+                "moduleName": "\"aurelia-testing\""
+              }
+            }
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "title": "Constructors",
+          "kind": 512,
+          "children": [
+            59
+          ]
+        }
+      ]
+    },
+    {
       "id": 3,
       "name": "ComponentTester",
       "kind": 128,
@@ -74,7 +157,7 @@
           "type": {
             "type": "reference",
             "name": "View",
-            "id": 2519,
+            "id": 2565,
             "moduleName": "\"aurelia-templating\""
           }
         },
@@ -311,7 +394,7 @@
                               "type": {
                                 "type": "reference",
                                 "name": "Aurelia",
-                                "id": 603
+                                "id": 623
                               }
                             }
                           ],
@@ -540,6 +623,227 @@
     },
     {
       "id": 43,
+      "name": "ViewSpy",
+      "kind": 128,
+      "kindString": "Class",
+      "flags": {
+        "isExported": true
+      },
+      "comment": {
+        "shortText": "Attribute to be placed on any HTML element in a view to emit the View instance\nto the debug console, giving you insight into the live View instance, including\nall child views, live bindings, behaviors and more."
+      },
+      "children": [
+        {
+          "id": 44,
+          "name": "constructor",
+          "kind": 512,
+          "kindString": "Constructor",
+          "flags": {
+            "isExported": true
+          },
+          "comment": {
+            "shortText": "Creates a new instance of ViewSpy."
+          },
+          "signatures": [
+            {
+              "id": 45,
+              "name": "new ViewSpy",
+              "kind": 16384,
+              "kindString": "Constructor signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Creates a new instance of ViewSpy."
+              },
+              "type": {
+                "type": "reference",
+                "name": "ViewSpy",
+                "id": 43,
+                "moduleName": "\"aurelia-testing\""
+              }
+            }
+          ]
+        },
+        {
+          "id": 52,
+          "name": "attached",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 53,
+              "name": "attached",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Invoked when the target element is attached to the DOM."
+              },
+              "type": {
+                "type": "instrinct",
+                "name": "any"
+              }
+            }
+          ]
+        },
+        {
+          "id": 49,
+          "name": "bind",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 50,
+              "name": "bind",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Invoked when the target view is bound."
+              },
+              "parameters": [
+                {
+                  "id": 51,
+                  "name": "bindingContext",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "The target view's binding context.\n"
+                  },
+                  "type": {
+                    "type": "instrinct",
+                    "name": "any"
+                  }
+                }
+              ],
+              "type": {
+                "type": "instrinct",
+                "name": "any"
+              }
+            }
+          ]
+        },
+        {
+          "id": 46,
+          "name": "created",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 47,
+              "name": "created",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Invoked when the target view is created."
+              },
+              "parameters": [
+                {
+                  "id": 48,
+                  "name": "view",
+                  "kind": 32768,
+                  "kindString": "Parameter",
+                  "flags": {},
+                  "comment": {
+                    "text": "The target view.\n"
+                  },
+                  "type": {
+                    "type": "instrinct",
+                    "name": "any"
+                  }
+                }
+              ],
+              "type": {
+                "type": "instrinct",
+                "name": "any"
+              }
+            }
+          ]
+        },
+        {
+          "id": 54,
+          "name": "detached",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 55,
+              "name": "detached",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Invoked when the target element is detached from the DOM."
+              },
+              "type": {
+                "type": "instrinct",
+                "name": "any"
+              }
+            }
+          ]
+        },
+        {
+          "id": 56,
+          "name": "unbind",
+          "kind": 2048,
+          "kindString": "Method",
+          "flags": {
+            "isExported": true
+          },
+          "signatures": [
+            {
+              "id": 57,
+              "name": "unbind",
+              "kind": 4096,
+              "kindString": "Call signature",
+              "flags": {},
+              "comment": {
+                "shortText": "Invoked when the target element is unbound."
+              },
+              "type": {
+                "type": "instrinct",
+                "name": "any"
+              }
+            }
+          ]
+        }
+      ],
+      "groups": [
+        {
+          "title": "Constructors",
+          "kind": 512,
+          "children": [
+            44
+          ]
+        },
+        {
+          "title": "Methods",
+          "kind": 2048,
+          "children": [
+            52,
+            49,
+            46,
+            54,
+            56
+          ]
+        }
+      ]
+    },
+    {
+      "id": 63,
       "name": "StageComponent",
       "kind": 32,
       "kindString": "Variable",
@@ -557,14 +861,16 @@
       "title": "Classes",
       "kind": 128,
       "children": [
-        3
+        58,
+        3,
+        43
       ]
     },
     {
       "title": "Variables",
       "kind": 32,
       "children": [
-        43
+        63
       ]
     }
   ]

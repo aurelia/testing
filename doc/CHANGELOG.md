@@ -1,3 +1,17 @@
+## 0.3.0 (2016-05-31)
+
+
+#### Bug Fixes
+
+* **index:** correct export strategy ([d1a0533f](http://github.com/aurelia/testing/commit/d1a0533f5a462f5df8f711798aab7a9b1ec95bdd))
+* **package:** add missing dependencies ([466971e9](http://github.com/aurelia/testing/commit/466971e9d5564756b2bbd7c22415de83e6e2b9cc))
+
+
+#### Features
+
+* **spies:** add view-spy and compile-spy ([fc81850f](http://github.com/aurelia/testing/commit/fc81850f9f23a2131fc370d0b744f53ddb58374e))
+
+
 ### 0.2.2 (2016-05-17)
 
 

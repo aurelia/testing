@@ -1,13 +1,13 @@
 declare module 'aurelia-testing' {
   import * as LogManager from 'aurelia-logging';
   import {
-    customAttribute,
-    View,
-    TargetInstruction
-  } from 'aurelia-templating';
-  import {
     bootstrap
   } from 'aurelia-bootstrapper';
+  import {
+    View,
+    customAttribute,
+    TargetInstruction
+  } from 'aurelia-templating';
   import {
     Aurelia
   } from 'aurelia-framework';
@@ -17,6 +17,26 @@ declare module 'aurelia-testing' {
   import {
     DOM
   } from 'aurelia-pal';
+  export const StageComponent: any;
+  export class ComponentTester {
+    bind: ((bindingContext: any) => void);
+    attached: (() => void);
+    unbind: (() => void);
+    dispose: (() => Promise<any>);
+    element: Element;
+    viewModel: any;
+    configure: any;
+    _html: string;
+    _resources: string | string[];
+    _bindingContext: any;
+    _rootView: View;
+    bootstrap(configure: ((aurelia: Aurelia) => void)): any;
+    withResources(resources: string | string[]): ComponentTester;
+    inView(html: string): ComponentTester;
+    boundTo(bindingContext: any): ComponentTester;
+    manuallyHandleLifecycle(): ComponentTester;
+    create(): Promise<void>;
+  }
   
   /**
   * Attribute to be placed on any HTML element in a view to emit the View instance
@@ -56,26 +76,6 @@ declare module 'aurelia-testing' {
       * Invoked when the target element is unbound.
       */
     unbind(): any;
-  }
-  export const StageComponent: any;
-  export class ComponentTester {
-    bind: ((bindingContext: any) => void);
-    attached: (() => void);
-    unbind: (() => void);
-    dispose: (() => Promise<any>);
-    element: Element;
-    viewModel: any;
-    configure: any;
-    _html: string;
-    _resources: string | string[];
-    _bindingContext: any;
-    _rootView: View;
-    bootstrap(configure: ((aurelia: Aurelia) => void)): any;
-    withResources(resources: string | string[]): ComponentTester;
-    inView(html: string): ComponentTester;
-    boundTo(bindingContext: any): ComponentTester;
-    manuallyHandleLifecycle(): ComponentTester;
-    create(): Promise<void>;
   }
   
   /**
