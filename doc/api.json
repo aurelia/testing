@@ -157,7 +157,7 @@
           "type": {
             "type": "reference",
             "name": "View",
-            "id": 2565,
+            "id": 2116,
             "moduleName": "\"aurelia-templating\""
           }
         },
@@ -394,7 +394,7 @@
                               "type": {
                                 "type": "reference",
                                 "name": "Aurelia",
-                                "id": 623
+                                "id": 698
                               }
                             }
                           ],

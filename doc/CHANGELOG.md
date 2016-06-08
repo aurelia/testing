@@ -1,3 +1,11 @@
+### 0.3.1 (2016-06-08)
+
+
+#### Bug Fixes
+
+* **aurelia-testing:** missing exports ([94bfbaca](http://github.com/aurelia/testing/commit/94bfbacac394d10a35da19adf044612f89066a39), closes [#10](http://github.com/aurelia/testing/issues/10))
+
+
 ## 0.3.0 (2016-05-31)
 
 

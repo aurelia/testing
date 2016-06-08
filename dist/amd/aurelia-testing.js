@@ -1,10 +1,10 @@
-define(['exports', './compile-spy', './view-spy'], function (exports, _compileSpy, _viewSpy) {
+define(['exports', './compile-spy', './view-spy', './component-tester'], function (exports, _compileSpy, _viewSpy, _componentTester) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.configure = exports.ViewSpy = exports.CompileSpy = undefined;
+  exports.configure = exports.ComponentTester = exports.StageComponent = exports.ViewSpy = exports.CompileSpy = undefined;
 
 
   function configure(config) {
@@ -13,5 +13,7 @@ define(['exports', './compile-spy', './view-spy'], function (exports, _compileSp
 
   exports.CompileSpy = _compileSpy.CompileSpy;
   exports.ViewSpy = _viewSpy.ViewSpy;
+  exports.StageComponent = _componentTester.StageComponent;
+  exports.ComponentTester = _componentTester.ComponentTester;
   exports.configure = configure;
 });
