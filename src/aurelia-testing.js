@@ -1,5 +1,6 @@
 import {CompileSpy} from './compile-spy';
 import {ViewSpy} from './view-spy';
+import {StageComponent, ComponentTester} from './component-tester';
 
 function configure(config) {
   config.globalResources(
@@ -11,5 +12,7 @@ function configure(config) {
 export {
   CompileSpy,
   ViewSpy,
+  StageComponent,
+  ComponentTester,
   configure
 };
