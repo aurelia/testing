@@ -6,11 +6,7 @@ define(['exports', 'aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framew
   });
   exports.ComponentTester = exports.StageComponent = undefined;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   var StageComponent = exports.StageComponent = {
     withResources: function withResources(resources) {
@@ -20,7 +16,7 @@ define(['exports', 'aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framew
 
   var ComponentTester = exports.ComponentTester = function () {
     function ComponentTester() {
-      _classCallCheck(this, ComponentTester);
+      
 
       this.configure = function (aurelia) {
         return aurelia.use.standardConfiguration();

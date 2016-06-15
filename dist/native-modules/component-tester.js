@@ -1,25 +1,16 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ComponentTester = exports.StageComponent = undefined;
-
-var _aureliaBootstrapper = require('aurelia-bootstrapper');
-
-var _aureliaTemplating = require('aurelia-templating');
-
-var _aureliaFramework = require('aurelia-framework');
 
 
+import { bootstrap } from 'aurelia-bootstrapper';
+import { View } from 'aurelia-templating';
+import { Aurelia } from 'aurelia-framework';
 
-var StageComponent = exports.StageComponent = {
+export var StageComponent = {
   withResources: function withResources(resources) {
     return new ComponentTester().withResources(resources);
   }
 };
 
-var ComponentTester = exports.ComponentTester = function () {
+export var ComponentTester = function () {
   function ComponentTester() {
     
 
@@ -57,7 +48,7 @@ var ComponentTester = exports.ComponentTester = function () {
   ComponentTester.prototype.create = function create() {
     var _this = this;
 
-    return (0, _aureliaBootstrapper.bootstrap)(function (aurelia) {
+    return bootstrap(function (aurelia) {
       return Promise.resolve(_this.configure(aurelia)).then(function () {
         aurelia.use.globalResources(_this._resources);
         return aurelia.start().then(function (a) {
@@ -84,11 +75,11 @@ var ComponentTester = exports.ComponentTester = function () {
   ComponentTester.prototype._prepareLifecycle = function _prepareLifecycle() {
     var _this2 = this;
 
-    var bindPrototype = _aureliaTemplating.View.prototype.bind;
-    _aureliaTemplating.View.prototype.bind = function () {};
+    var bindPrototype = View.prototype.bind;
+    View.prototype.bind = function () {};
     this.bind = function (bindingContext) {
       return new Promise(function (resolve) {
-        _aureliaTemplating.View.prototype.bind = bindPrototype;
+        View.prototype.bind = bindPrototype;
         if (bindingContext !== undefined) {
           _this2._bindingContext = bindingContext;
         }
@@ -99,11 +90,11 @@ var ComponentTester = exports.ComponentTester = function () {
       });
     };
 
-    var attachedPrototype = _aureliaTemplating.View.prototype.attached;
-    _aureliaTemplating.View.prototype.attached = function () {};
+    var attachedPrototype = View.prototype.attached;
+    View.prototype.attached = function () {};
     this.attached = function () {
       return new Promise(function (resolve) {
-        _aureliaTemplating.View.prototype.attached = attachedPrototype;
+        View.prototype.attached = attachedPrototype;
         _this2._rootView.attached();
         setTimeout(function () {
           return resolve();

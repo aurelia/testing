@@ -25,17 +25,13 @@ define(['exports', 'aurelia-templating', 'aurelia-logging'], function (exports, 
     }
   }
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   var _dec, _class;
 
   var ViewSpy = exports.ViewSpy = (_dec = (0, _aureliaTemplating.customAttribute)('view-spy'), _dec(_class = function () {
     function ViewSpy() {
-      _classCallCheck(this, ViewSpy);
+      
 
       this.logger = LogManager.getLogger('view-spy');
     }

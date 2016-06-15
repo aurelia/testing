@@ -5,11 +5,7 @@ System.register(['aurelia-templating', 'aurelia-logging'], function (_export, _c
 
   var customAttribute, LogManager, _dec, _class, ViewSpy;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   return {
     setters: [function (_aureliaTemplating) {
@@ -20,7 +16,7 @@ System.register(['aurelia-templating', 'aurelia-logging'], function (_export, _c
     execute: function () {
       _export('ViewSpy', ViewSpy = (_dec = customAttribute('view-spy'), _dec(_class = function () {
         function ViewSpy() {
-          _classCallCheck(this, ViewSpy);
+          
 
           this.logger = LogManager.getLogger('view-spy');
         }

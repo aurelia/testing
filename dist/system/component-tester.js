@@ -5,11 +5,7 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
 
   var bootstrap, View, Aurelia, StageComponent, ComponentTester;
 
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
+  
 
   return {
     setters: [function (_aureliaBootstrapper) {
@@ -30,7 +26,7 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
 
       _export('ComponentTester', ComponentTester = function () {
         function ComponentTester() {
-          _classCallCheck(this, ComponentTester);
+          
 
           this.configure = function (aurelia) {
             return aurelia.use.standardConfiguration();
