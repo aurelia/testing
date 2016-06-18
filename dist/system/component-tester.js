@@ -64,7 +64,9 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
 
           return bootstrap(function (aurelia) {
             return Promise.resolve(_this.configure(aurelia)).then(function () {
-              aurelia.use.globalResources(_this._resources);
+              if (_this._resources) {
+                aurelia.use.globalResources(_this._resources);
+              }
               return aurelia.start().then(function (a) {
                 var host = document.createElement('div');
                 host.innerHTML = _this._html;
@@ -72,7 +74,9 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
                 aurelia.enhance(_this._bindingContext, host);
                 _this._rootView = aurelia.root;
                 _this.element = host.firstElementChild;
-                _this.viewModel = _this.element.au.controller.viewModel;
+                if (aurelia.root.controllers.length) {
+                  _this.viewModel = aurelia.root.controllers[0].viewModel;
+                }
                 _this.dispose = function () {
                   return host.parentNode.removeChild(host);
                 };

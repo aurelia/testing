@@ -51,7 +51,9 @@ export class ComponentTester {
   create(): Promise<void> {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
-        aurelia.use.globalResources(this._resources);
+        if (this._resources) {
+          aurelia.use.globalResources(this._resources);
+        }
         return aurelia.start().then(a => {
           let host = document.createElement('div');
           host.innerHTML = this._html;
@@ -59,7 +61,9 @@ export class ComponentTester {
           aurelia.enhance(this._bindingContext, host);
           this._rootView = aurelia.root;
           this.element = host.firstElementChild;
-          this.viewModel = this.element.au.controller.viewModel;
+          if (aurelia.root.controllers.length) {
+            this.viewModel = aurelia.root.controllers[0].viewModel;
+          }
           this.dispose = () => host.parentNode.removeChild(host);
           return new Promise(resolve => setTimeout(() => resolve(), 0));
         });
