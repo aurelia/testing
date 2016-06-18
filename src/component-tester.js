@@ -48,7 +48,9 @@ export class ComponentTester {
   create(): Promise<void> {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
-        aurelia.use.globalResources(this._resources);
+        if (this._resources) {
+          aurelia.use.globalResources(this._resources);
+        }
         return aurelia.start().then(a => {
           let host = document.createElement('div');
           host.innerHTML = this._html;
