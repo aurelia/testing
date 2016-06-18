@@ -56,7 +56,9 @@ export class ComponentTester {
           aurelia.enhance(this._bindingContext, host);
           this._rootView = aurelia.root;
           this.element = host.firstElementChild;
-          this.viewModel = this.element.au.controller.viewModel;
+          if (aurelia.root.controllers.length) {
+            this.viewModel = aurelia.root.controllers[0].viewModel;
+          }
           this.dispose = () => host.parentNode.removeChild(host);
           return new Promise(resolve => setTimeout(() => resolve(), 0));
         });
