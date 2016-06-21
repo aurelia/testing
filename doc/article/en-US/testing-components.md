@@ -1,8 +1,8 @@
 ---
 {
-  "name": "Testing: Component Tester",
+  "name": "Testing Components",
   "culture": "en-US",
-  "description": "An overview of how to unit test Custom Elements and Custom Attributes",
+  "description": "An overview of how to unit test Custom Elements and Custom Attributes.",
   "engines" : { "aurelia-doc" : "^1.0.0" },
   "author": {
   	"name": "Martin Gustafsson",
@@ -181,25 +181,3 @@ The `ComponentTester` exposes a set of properties that can be handy when doing a
 * `unbind` - Manually handle `unbind`.
 * `attached` - Manually handle `attached`.
 * `detached` - Manually handle `detached`.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

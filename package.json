@@ -104,8 +104,19 @@
     "yargs": "^4.7.1"
   },
   "aurelia": {
-    "documentation": {
-      "articles": []
+    "aurelia": {
+      "documentation": {
+        "articles": [
+          {
+            "title": "Testing Components",
+            "href": "doc/article/en-US/testing-components.md"
+          },
+          {
+            "title": "End-to-End Testing",
+            "href": "doc/article/en-US/end-to-end-testing.md"
+          }
+        ]
+      }
     }
   }
 }
