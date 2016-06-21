@@ -52,10 +52,11 @@ export class MyComponent {
 }
 ```
 
-In order to test that the component render expected html based on what the view is bount to we can write following test:
+In order to test that the component renders expected html based on what the view is bound to we can write following test
 
 ```JavaScript
 import {StageComponent} from 'aurelia-testing';
+import {bootstrap} from 'aurelia-bootstrapper';
 
 describe('MyComponent', () => {
   let component;
@@ -68,7 +69,7 @@ describe('MyComponent', () => {
   });
 
   it('should render first name', done => {
-    component.create().then(() => {
+    component.create(bootstrap).then(() => {
       const nameElement = document.querySelector('.firstName');
       expect(nameElement.innerHTML).toBe('Bob');
       done();
@@ -138,10 +139,11 @@ export class MyAttributeCustomAttribute {
 }
 ```
 
-You now want to assert the element actually gets the background color of the color that is bound to, we can write a test like this
+You now want to assert the element actually gets the background color it is bound to
 
 ```JavaScript
 import {StageComponent} from 'aurelia-testing';
+import {bootstrap} from 'aurelia-bootstrapper';
 
 describe('MyAttribute', () => {
   let component;
@@ -154,7 +156,7 @@ describe('MyAttribute', () => {
   });
 
   it('should set the background color to provided color', done => {
-     component.create().then(() => {
+     component.create(bootstrap).then(() => {
        expect(component.element.style.backgroundColor).toBe('blue');
        done();
      });
@@ -166,7 +168,7 @@ describe('MyAttribute', () => {
 });
 ```
 
-As you can see everything is follows the same pattern we had for our Custom Element test. One exception is we take advantage of the `element` property that gets provided by the `ComponentTester` instance,
+As you can see everything follows the same pattern we had for our Custom Element test. One exception is we take advantage of the `element` property that gets provided by the `ComponentTester` instance,
 the element property is the actual html element that gets rendered. This can also be used when testing custom elements.
 
 ## [Exposed properties and functions](aurelia-doc://section/4/version/1.0.0)
