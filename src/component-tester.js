@@ -1,4 +1,3 @@
-import {bootstrap} from 'aurelia-bootstrapper';
 import {View} from 'aurelia-templating';
 import {Aurelia} from 'aurelia-framework';
 
@@ -45,7 +44,7 @@ export class ComponentTester {
     return this;
   }
 
-  create(): Promise<void> {
+  create(bootstrap: (aurelia: Aurelia) => Promise<void>): Promise<void> {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
         if (this._resources) {
