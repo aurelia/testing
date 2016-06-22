@@ -1,6 +1,5 @@
 
 
-import { bootstrap } from 'aurelia-bootstrapper';
 import { View } from 'aurelia-templating';
 import { Aurelia } from 'aurelia-framework';
 
@@ -45,7 +44,7 @@ export var ComponentTester = function () {
     return this;
   };
 
-  ComponentTester.prototype.create = function create() {
+  ComponentTester.prototype.create = function create(bootstrap) {
     var _this = this;
 
     return bootstrap(function (aurelia) {

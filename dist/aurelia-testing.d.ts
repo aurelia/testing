@@ -1,8 +1,5 @@
 import * as LogManager from 'aurelia-logging';
 import {
-  bootstrap
-} from 'aurelia-bootstrapper';
-import {
   View,
   customAttribute,
   TargetInstruction
@@ -34,7 +31,7 @@ export declare class ComponentTester {
   inView(html: string): ComponentTester;
   boundTo(bindingContext: any): ComponentTester;
   manuallyHandleLifecycle(): ComponentTester;
-  create(): Promise<void>;
+  create(bootstrap: ((aurelia: Aurelia) => Promise<void>)): Promise<void>;
   _prepareLifecycle(): any;
 }
 

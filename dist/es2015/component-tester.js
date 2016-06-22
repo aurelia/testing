@@ -1,4 +1,3 @@
-import { bootstrap } from 'aurelia-bootstrapper';
 import { View } from 'aurelia-templating';
 import { Aurelia } from 'aurelia-framework';
 
@@ -39,7 +38,7 @@ export let ComponentTester = class ComponentTester {
     return this;
   }
 
-  create() {
+  create(bootstrap) {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
         if (this._resources) {

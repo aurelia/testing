@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framework'], function (exports, _aureliaBootstrapper, _aureliaTemplating, _aureliaFramework) {
+define(['exports', 'aurelia-templating', 'aurelia-framework'], function (exports, _aureliaTemplating, _aureliaFramework) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -49,10 +49,10 @@ define(['exports', 'aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framew
       return this;
     };
 
-    ComponentTester.prototype.create = function create() {
+    ComponentTester.prototype.create = function create(bootstrap) {
       var _this = this;
 
-      return (0, _aureliaBootstrapper.bootstrap)(function (aurelia) {
+      return bootstrap(function (aurelia) {
         return Promise.resolve(_this.configure(aurelia)).then(function () {
           if (_this._resources) {
             aurelia.use.globalResources(_this._resources);

@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ComponentTester = exports.StageComponent = undefined;
 
-var _aureliaBootstrapper = require('aurelia-bootstrapper');
-
 var _aureliaTemplating = require('aurelia-templating');
 
 var _aureliaFramework = require('aurelia-framework');
@@ -54,10 +52,10 @@ var ComponentTester = exports.ComponentTester = function () {
     return this;
   };
 
-  ComponentTester.prototype.create = function create() {
+  ComponentTester.prototype.create = function create(bootstrap) {
     var _this = this;
 
-    return (0, _aureliaBootstrapper.bootstrap)(function (aurelia) {
+    return bootstrap(function (aurelia) {
       return Promise.resolve(_this.configure(aurelia)).then(function () {
         if (_this._resources) {
           aurelia.use.globalResources(_this._resources);

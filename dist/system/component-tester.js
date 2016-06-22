@@ -1,16 +1,14 @@
 'use strict';
 
-System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framework'], function (_export, _context) {
+System.register(['aurelia-templating', 'aurelia-framework'], function (_export, _context) {
   "use strict";
 
-  var bootstrap, View, Aurelia, StageComponent, ComponentTester;
+  var View, Aurelia, StageComponent, ComponentTester;
 
   
 
   return {
-    setters: [function (_aureliaBootstrapper) {
-      bootstrap = _aureliaBootstrapper.bootstrap;
-    }, function (_aureliaTemplating) {
+    setters: [function (_aureliaTemplating) {
       View = _aureliaTemplating.View;
     }, function (_aureliaFramework) {
       Aurelia = _aureliaFramework.Aurelia;
@@ -59,7 +57,7 @@ System.register(['aurelia-bootstrapper', 'aurelia-templating', 'aurelia-framewor
           return this;
         };
 
-        ComponentTester.prototype.create = function create() {
+        ComponentTester.prototype.create = function create(bootstrap) {
           var _this = this;
 
           return bootstrap(function (aurelia) {

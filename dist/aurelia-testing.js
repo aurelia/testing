@@ -1,5 +1,4 @@
 import * as LogManager from 'aurelia-logging';
-import {bootstrap} from 'aurelia-bootstrapper';
 import {View,customAttribute,TargetInstruction} from 'aurelia-templating';
 import {Aurelia} from 'aurelia-framework';
 import {inject} from 'aurelia-dependency-injection';
@@ -48,7 +47,7 @@ export class ComponentTester {
     return this;
   }
 
-  create(): Promise<void> {
+  create(bootstrap: (aurelia: Aurelia) => Promise<void>): Promise<void> {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
         if (this._resources) {

@@ -1,3 +1,13 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/aurelia/testing/compare/0.4.2...v0.5.0) (2016-06-22)
+
+
+### Features
+
+* **component-tester:** remove hard dependency on bootstrapper ([3887d19](https://github.com/aurelia/testing/commit/3887d19))
+
+
+
 ### 0.3.1 (2016-06-08)
 
 
