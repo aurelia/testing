@@ -22,17 +22,12 @@ export declare class ComponentTester {
   element: Element;
   viewModel: any;
   configure: any;
-  _html: string;
-  _resources: string | string[];
-  _bindingContext: any;
-  _rootView: View;
   bootstrap(configure: ((aurelia: Aurelia) => void)): any;
   withResources(resources: string | string[]): ComponentTester;
   inView(html: string): ComponentTester;
   boundTo(bindingContext: any): ComponentTester;
   manuallyHandleLifecycle(): ComponentTester;
   create(bootstrap: ((aurelia: Aurelia) => Promise<void>)): Promise<void>;
-  _prepareLifecycle(): any;
 }
 
 /**
@@ -46,7 +41,6 @@ export declare class ViewSpy {
     * Creates a new instance of ViewSpy.
     */
   constructor();
-  _log(lifecycleName?: any, context?: any): any;
   
   /**
     * Invoked when the target view is created.
