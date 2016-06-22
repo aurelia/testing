@@ -1,3 +1,8 @@
+<a name="1.0.0-beta.1.0.0"></a>
+# [1.0.0-beta.1.0.0](https://github.com/aurelia/testing/compare/0.5.0...v1.0.0-beta.1.0.0) (2016-06-22)
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/aurelia/testing/compare/0.4.2...v0.5.0) (2016-06-22)
 
