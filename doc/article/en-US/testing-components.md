@@ -25,7 +25,7 @@ If you are using JSPM:
 jspm install aurelia-testing
 ```
 
-If you are using npm:
+If you are using NPM:
 
 ```shell
 npm install aurelia-testing
@@ -37,65 +37,74 @@ Once you've got the library installed, you can use it in a unit test. In the fol
 
 Let's start with a simple custom element that we want to test:
 
-```html
-<template>
-  <div class="firstName">${firstName}</div>
-</template>
-```
+<code-listing heading="A Custom Element's View">
+  <source-code lang="HTML">
+    <template>
+      <div class="firstName">${firstName}</div>
+    </template>
+  </source-code>
+</code-listing>
 
-```JavaScript
-import {bindable} from 'aurelia-framework';
+<code-listing heading="A Custom Element's View-Model">
+  <source-code lang="JavaScript">
+    import {bindable} from 'aurelia-framework';
 
-export class MyComponent {
-  @bindable firstName;
-}
-```
+    export class MyComponent {
+      @bindable firstName;
+    }
+  </source-code>
+</code-listing>
 
 In order to test that the component renders expected HTML, based on what the view is bound to, we can write following test:
 
-```JavaScript
-import {StageComponent} from 'aurelia-testing';
-import {bootstrap} from 'aurelia-bootstrapper';
+<code-listing heading="A Custom Element Test">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+    import {bootstrap} from 'aurelia-bootstrapper';
 
-describe('MyComponent', () => {
-  let component;
+    describe('MyComponent', () => {
+      let component;
 
-  beforeEach(() => {
-    component = StageComponent
-      .withResources('src/my-component')
-      .inView('<my-component name.bind="name"></my-component>')
-      .boundTo({ firstName: 'Bob' });
-  });
+      beforeEach(() => {
+        component = StageComponent
+          .withResources('src/my-component')
+          .inView('<my-component name.bind="name"></my-component>')
+          .boundTo({ firstName: 'Bob' });
+      });
 
-  it('should render first name', done => {
-    component.create(bootstrap).then(() => {
-      const nameElement = document.querySelector('.firstName');
-      expect(nameElement.innerHTML).toBe('Bob');
-      done();
+      it('should render first name', done => {
+        component.create(bootstrap).then(() => {
+          const nameElement = document.querySelector('.firstName');
+          expect(nameElement.innerHTML).toBe('Bob');
+          done();
+        });
+      });
+
+      afterEach(() => {
+        component.dispose();
+      });
     });
-  });
-
-  afterEach(() => {
-    component.dispose();
-  });
-});
-
-```
+  </source-code>
+</code-listing>
 
 Running the test should result in the following html should be rendered `<div class="firstName">Bob</div>` and the test should pass. But let's take a step back and see what is going on here. First, we import `StageComponent` from `aurelia-testing`:
 
-```JavaScript
-import {StageComponent} from 'aurelia-testing';
-```
+<code-listing heading="Importing StageComponent">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+  </source-code>
+</code-listing>
 
 `StageComponent` is just a convenience factory that creates a new instance of the `ComponentTester` class. `ComponentTester` is the actual class doing all the work. Next we use the `StageComponent` factory to stage our component:
 
-```JavaScript
-component = StageComponent
+<code-listing heading="Staging The Element">
+  <source-code lang="JavaScript">
+    component = StageComponent
       .withResources('src/my-component')
       .inView('<my-component name.bind="name"></my-component>')
       .boundTo({ name: 'Bob' });
-```
+  </source-code>
+</code-listing>
 
 `StageCompnent` comes with one property, `withResources`, that lets you start off the staging with a fluent API. `withResources` lets you specify which resource or resources for Aurelia to register. It takes either a string for registering one single resource or an Array of strings for registering multiple resources. `inView` lets you provide the html markup to be run. This is just a standard Aurelia view where you can do all the data binding you are used to in a full-blown Aurelia application. `boundTo` lets you provide a test `viewModel` with the data that the view will get bound to. In this example, the staging of the component id done in Jasmine's `beforeEach` method in order to reuse the same setup for multiple tests.
 
@@ -107,47 +116,51 @@ Finally, we call `dispose` on our `ComponentTester` instance. This will clean up
 
 Testing a Custom Attribute is not much different than testing a Custom Element. Let's look at how it's done by starting with a simple example custom attribute that lets you change the background color of the element it is placed on:
 
-```JavaScript
-export class MyAttributeCustomAttribute {
-  static inject = [Element];
-  constructor(element) {
-    this.element = element;
-  }
+<code-listing heading="A Custom Attribute">
+  <source-code lang="JavaScript">
+    export class MyAttributeCustomAttribute {
+      static inject = [Element];
+      constructor(element) {
+        this.element = element;
+      }
 
-  valueChanged(newValue){
-    this.element.style.backgroundColor = newValue;
-  }
-}
-```
+      valueChanged(newValue){
+        this.element.style.backgroundColor = newValue;
+      }
+    }
+  </source-code>
+</code-listing>
 
 Now, let's assert that the element actually gets the background color it is bound to:
 
-```JavaScript
-import {StageComponent} from 'aurelia-testing';
-import {bootstrap} from 'aurelia-bootstrapper';
+<code-listing heading="A Custom Attribute Test">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+    import {bootstrap} from 'aurelia-bootstrapper';
 
-describe('MyAttribute', () => {
-  let component;
+    describe('MyAttribute', () => {
+      let component;
 
-  beforeEach(() => {
-    component = StageComponent
-        .withResources('src/my-attribute')
-        .inView('<div my-attribute.bind="color">Bob</div>')
-        .boundTo({ color: 'blue' });
-  });
+      beforeEach(() => {
+        component = StageComponent
+            .withResources('src/my-attribute')
+            .inView('<div my-attribute.bind="color">Bob</div>')
+            .boundTo({ color: 'blue' });
+      });
 
-  it('should set the background color to provided color', done => {
-     component.create(bootstrap).then(() => {
-       expect(component.element.style.backgroundColor).toBe('blue');
-       done();
-     });
-  });
+      it('should set the background color to provided color', done => {
+         component.create(bootstrap).then(() => {
+           expect(component.element.style.backgroundColor).toBe('blue');
+           done();
+         });
+      });
 
-  afterEach(() => {
-    component.dispose();
-  });
-});
-```
+      afterEach(() => {
+        component.dispose();
+      });
+    });
+  </source-code>
+</code-listing>
 
 As you can see, everything follows the same pattern we had for our custom element test. One exception is that we take advantage of the `element` property which gets provided by the `ComponentTester` instance. The `element` property is the actual HTML element that gets rendered. This can also be used when testing custom elements.
 
