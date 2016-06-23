@@ -15,8 +15,7 @@
 ---
 ## [Introduction](aurelia-doc://section/1/version/1.0.0)
 
-With the Component Tester you can easily stage a custom element or custom attribute in isolation inside a mini Aurelia application,
-assert how it responds to databinding and assert its behavior throughout the component's lifecycle (bind, attached etc).
+With the Component Tester you can easily stage a custom element or custom attribute in isolation inside a mini Aurelia application, assert how it responds to data-binding and assert its behavior throughout the component's lifecycle (bind, attached etc).
 
 ## [Getting Started](aurelia-doc://section/2/version/1.0.0)
 
@@ -32,11 +31,11 @@ If you are using npm:
 npm install aurelia-testing
 ```
 
-Once you've got the library installed, you can use it in a unit test. In the examples we are using Jasmine, but any testing framework can be used.
+Once you've got the library installed, you can use it in a unit test. In the following examples we will be using Jasmine, but any testing framework would work.
 
 ## [Testing a Custom Elements](aurelia-doc://section/3/version/1.0.0)
 
-Given you want to test following Custom Element
+Let's start with a simple custom element that we want to test:
 
 ```html
 <template>
@@ -52,7 +51,7 @@ export class MyComponent {
 }
 ```
 
-In order to test that the component renders expected html based on what the view is bound to we can write following test
+In order to test that the component renders expected HTML, based on what the view is bound to, we can write following test:
 
 ```JavaScript
 import {StageComponent} from 'aurelia-testing';
@@ -83,19 +82,13 @@ describe('MyComponent', () => {
 
 ```
 
-Running the test following html should be rendered `<div class="firstName">Bob</div>` and the test should pass.
-
-But let's take a step back and take a closer look at what is going on
-
-First we import `StageComponent` from `aurelia-testing`
+Running the test should result in the following html should be rendered `<div class="firstName">Bob</div>` and the test should pass. But let's take a step back and see what is going on here. First, we import `StageComponent` from `aurelia-testing`:
 
 ```JavaScript
 import {StageComponent} from 'aurelia-testing';
 ```
 
-`StageComponent` is just a convenience factory that creates a new instance of the `ComponentTester` class. `ComponentTester` is the actual class doing all the work.
-
-Next we use the `StageComponent` factory the stage our component
+`StageComponent` is just a convenience factory that creates a new instance of the `ComponentTester` class. `ComponentTester` is the actual class doing all the work. Next we use the `StageComponent` factory to stage our component:
 
 ```JavaScript
 component = StageComponent
@@ -104,27 +97,15 @@ component = StageComponent
       .boundTo({ name: 'Bob' });
 ```
 
-`StageCompnent` comes with one property `withResources` that lets you start off the staging with a fluent API. `withResources` lets you specify which resource or resources for Aurelia to register.
-It takes either a string for registering one single resource or an Array of strings for registering of multiple resources. `inView` lets you provide the html markup to be run, this is just a standard
-Aurelia view where you can do all data binding you are used to in a full blown Aurelia application. `boundTo` is basically your `viewModel` with the data that the view will get bound to.
+`StageCompnent` comes with one property, `withResources`, that lets you start off the staging with a fluent API. `withResources` lets you specify which resource or resources for Aurelia to register. It takes either a string for registering one single resource or an Array of strings for registering multiple resources. `inView` lets you provide the html markup to be run. This is just a standard Aurelia view where you can do all the data binding you are used to in a full-blown Aurelia application. `boundTo` lets you provide a test `viewModel` with the data that the view will get bound to. In this example, the staging of the component id done in Jasmine's `beforeEach` method in order to reuse the same setup for multiple tests.
 
-In this example the staging of the component of done in Jasmine's `beforeEach` method in order to reuse the same setup for multiple tests.
+Next, we come to the actual test where we call `create` on the `ComponentTester`. Create will kick everything off and bootstrap the mini Aurelia application, configure it with `standardConfiguration` (we will take a look later at how you can run with your own configuration), register provided resources as global resources, start the application and finally render your component so you can assert the expected behavior. In this case, we want to make sure our `firstName` property gets rendered correctly in the HTML by selecting the `div` tag via it's class name. We use `document.querySelector('.firstName');` to grab that and then check that its innerHTML is `Bob`. Next we call Jasmine's `done` function to tell Jasmine that the test is complete. Calling `done` is needed since the `create` method is asynchronous and returns a Promise.
 
-Then we come to the actual test where we call `create` on the `ComponentTester`, create will kick everyting off and bootstrap the mini Aurelia application, configure it with `standardConfiguration`
-(we will take a look later how you can run with your own configureation), register provided resources as global resources, start the application and finally render your componenet for you to assert
-it behaves as expected. In this case we want make sure our `firstName` property gets rendered correctly in the html by basically selecting the `div` tag by it's class name `document.querySelector('.firstName');`
-and check that its innerHTML is `Bob`. Then we call Jasmine's `done` function to tell Jasmine the test is done. Calling `done` is needed since the `create` method is asynchronous and returns a Promise.
+Finally, we call `dispose` on our `ComponentTester` instance. This will clean up the DOM so our next test will start out with a clean document. That's pretty much all there is to it. Easy right? Imagine doing the same assert with stand alone unit tests that run outside of Aurelia. It would be pretty difficult, especially for a more complex component.
 
-Last we call `dispose` on our `ComponentTester` instance, this will clean up the DOM for next test to start out with a clean document.
+## [Testing a Custom Attribute](aurelia-doc://section/4/version/1.0.0)
 
-That's pretty much all there is to it, pretty easy right? Imagine doing the same assert with stand alone unit tests that runs outside of Aurelia, that would be pretty hard, especially for a little more realistic
-and more complex component.
-
-## [Testing a Custom Attribute](aurelia-doc://section/3/version/1.0.0)
-
-Testing a Custom Attribute is not much different than testing a Custom Element. Here is an example of how you can test a simple Custom Attribute
-
-Given you have following Custom Attribute that lets you change the background color it is placed on
+Testing a Custom Attribute is not much different than testing a Custom Element. Let's look at how it's done by starting with a simple example custom attribute that lets you change the background color of the element it is placed on:
 
 ```JavaScript
 export class MyAttributeCustomAttribute {
@@ -139,7 +120,7 @@ export class MyAttributeCustomAttribute {
 }
 ```
 
-You now want to assert the element actually gets the background color it is bound to
+Now, let's assert that the element actually gets the background color it is bound to:
 
 ```JavaScript
 import {StageComponent} from 'aurelia-testing';
@@ -168,18 +149,17 @@ describe('MyAttribute', () => {
 });
 ```
 
-As you can see everything follows the same pattern we had for our Custom Element test. One exception is we take advantage of the `element` property that gets provided by the `ComponentTester` instance,
-the element property is the actual html element that gets rendered. This can also be used when testing custom elements.
+As you can see, everything follows the same pattern we had for our custom element test. One exception is that we take advantage of the `element` property which gets provided by the `ComponentTester` instance. The `element` property is the actual HTML element that gets rendered. This can also be used when testing custom elements.
 
-## [Exposed properties and functions](aurelia-doc://section/4/version/1.0.0)
+## [Helpful Properties and Functions](aurelia-doc://section/5/version/1.0.0)
 
-The `ComponentTester` exposes a set of properties that can be handy when doing asserts or the stage the component in a specific way
+The `ComponentTester` exposes a set of properties that can be handy when doing asserts or to stage a component in a specific way. Here's a list of what is available:
 
-* `element` - The html element that gets rendered.
-* `viewModel` - The controller instance (view model) for the component.
-* `configure` - The `ComponentTester`'s configure method can be overwritten in order to set up with custom configuration or get hold of the `container` instance.
-* `dispose` - Clean up the DOM after a test has run.
-* `bind` - Manually handle `bind`.
-* `unbind` - Manually handle `unbind`.
-* `attached` - Manually handle `attached`.
-* `detached` - Manually handle `detached`.
+* `element` - The HTML element that gets rendered.
+* `viewModel` - The view-model for the component.
+* `configure` - The `ComponentTester`'s configure method can be overwritten in order to set it up with custom configuration or get a reference to the `container` instance.
+* `dispose` - Cleans up the DOM after a test has run.
+* `bind` - Manually handles `bind`.
+* `unbind` - Manually handles `unbind`.
+* `attached` - Manually handles `attached`.
+* `detached` - Manually handles `detached`.
