@@ -101,7 +101,7 @@ Running the test should result in the following html should be rendered `<div cl
   <source-code lang="JavaScript">
     component = StageComponent
       .withResources('src/my-component')
-      .inView('<my-component name.bind="name"></my-component>')
+      .inView('<my-component name.bind="firstName"></my-component>')
       .boundTo({ name: 'Bob' });
   </source-code>
 </code-listing>
