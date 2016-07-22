@@ -101,12 +101,12 @@ Running the test should result in the following html should be rendered `<div cl
   <source-code lang="JavaScript">
     component = StageComponent
       .withResources('src/my-component')
-      .inView('<my-component name.bind="firstName"></my-component>')
-      .boundTo({ name: 'Bob' });
+      .inView('<my-component first-name.bind="firstName"></my-component>')
+      .boundTo({ firstName: 'Bob' });
   </source-code>
 </code-listing>
 
-`StageCompnent` comes with one property, `withResources`, that lets you start off the staging with a fluent API. `withResources` lets you specify which resource or resources for Aurelia to register. It takes either a string for registering one single resource or an Array of strings for registering multiple resources. `inView` lets you provide the html markup to be run. This is just a standard Aurelia view where you can do all the data binding you are used to in a full-blown Aurelia application. `boundTo` lets you provide a test `viewModel` with the data that the view will get bound to. In this example, the staging of the component id done in Jasmine's `beforeEach` method in order to reuse the same setup for multiple tests.
+`StageComponent` comes with one property, `withResources`, that lets you start off the staging with a fluent API. `withResources` lets you specify which resource or resources for Aurelia to register. It takes either a string for registering one single resource or an Array of strings for registering multiple resources. `inView` lets you provide the html markup to be run. This is just a standard Aurelia view where you can do all the data binding you are used to in a full-blown Aurelia application. `boundTo` lets you provide a test `viewModel` with the data that the view will get bound to. In this example, the staging of the component is done in Jasmine's `beforeEach` method in order to reuse the same setup for multiple tests.
 
 Next, we come to the actual test where we call `create` on the `ComponentTester`. Create will kick everything off and bootstrap the mini Aurelia application, configure it with `standardConfiguration` (we will take a look later at how you can run with your own configuration), register provided resources as global resources, start the application and finally render your component so you can assert the expected behavior. In this case, we want to make sure our `firstName` property gets rendered correctly in the HTML by selecting the `div` tag via it's class name. We use `document.querySelector('.firstName');` to grab that and then check that its innerHTML is `Bob`. Next we call Jasmine's `done` function to tell Jasmine that the test is complete. Calling `done` is needed since the `create` method is asynchronous and returns a Promise.
 
