@@ -60,7 +60,11 @@ export class ComponentTester {
           if (aurelia.root.controllers.length) {
             this.viewModel = aurelia.root.controllers[0].viewModel;
           }
-          this.dispose = () => host.parentNode.removeChild(host);
+          this.dispose = () => {
+            this._rootView.detached();
+            this._rootView.unbind();
+            return host.parentNode.removeChild(host);
+          }
           return new Promise(resolve => setTimeout(() => resolve(), 0));
         });
       });
