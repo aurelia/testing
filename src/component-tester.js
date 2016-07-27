@@ -49,17 +49,23 @@ export class ComponentTester {
         if (this._resources) {
           aurelia.use.globalResources(this._resources);
         }
+        
         return aurelia.start().then(a => {
           this.host = document.createElement('div');
           this.host.innerHTML = this._html;
+
           document.body.appendChild(this.host);
-          aurelia.enhance(this._bindingContext, this.host);
-          this._rootView = aurelia.root;
-          this.element = this.host.firstElementChild;
-          if (aurelia.root.controllers.length) {
-            this.viewModel = aurelia.root.controllers[0].viewModel;
-          }
-          return new Promise(resolve => setTimeout(() => resolve(), 0));
+
+          return aurelia.enhance(this._bindingContext, this.host).then(() => {
+            this._rootView = aurelia.root;
+            this.element = this.host.firstElementChild;
+
+            if (aurelia.root.controllers.length) {
+              this.viewModel = aurelia.root.controllers[0].viewModel;
+            }
+
+            return new Promise(resolve => setTimeout(() => resolve(), 0));
+          });
         });
       });
     });
@@ -75,7 +81,7 @@ export class ComponentTester {
     this._rootView.unbind();
     return this.host.parentNode.removeChild(this.host);
   }
-  
+
   _prepareLifecycle() {
     // bind
     const bindPrototype = View.prototype.bind;
