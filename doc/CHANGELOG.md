@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.2.0.0"></a>
+# [1.0.0-beta.2.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.1.0.3...v1.0.0-beta.2.0.0) (2016-07-27)
+
+
+### Bug Fixes
+
+* **component-tester:** call detached and unbind when disposing of tested component ([#27](https://github.com/aurelia/testing/issues/27)) ([f1585cc](https://github.com/aurelia/testing/commit/f1585cc))
+* **component-tester:** handle enhance promise ([681cff2](https://github.com/aurelia/testing/commit/681cff2))
+
+
+
 <a name="1.0.0-beta.1.0.0"></a>
 # [1.0.0-beta.1.0.0](https://github.com/aurelia/testing/compare/0.5.0...v1.0.0-beta.1.0.0) (2016-06-22)
 
