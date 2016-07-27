@@ -18,7 +18,6 @@ export declare class ComponentTester {
   bind: ((bindingContext: any) => void);
   attached: (() => void);
   unbind: (() => void);
-  dispose: (() => Promise<any>);
   element: Element;
   viewModel: any;
   configure: any;
@@ -28,6 +27,7 @@ export declare class ComponentTester {
   boundTo(bindingContext: any): ComponentTester;
   manuallyHandleLifecycle(): ComponentTester;
   create(bootstrap: ((aurelia: Aurelia) => Promise<void>)): Promise<void>;
+  dispose(): any;
 }
 
 /**

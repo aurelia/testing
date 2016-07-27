@@ -44,21 +44,37 @@ export let ComponentTester = class ComponentTester {
         if (this._resources) {
           aurelia.use.globalResources(this._resources);
         }
+
         return aurelia.start().then(a => {
-          let host = document.createElement('div');
-          host.innerHTML = this._html;
-          document.body.appendChild(host);
-          aurelia.enhance(this._bindingContext, host);
-          this._rootView = aurelia.root;
-          this.element = host.firstElementChild;
-          if (aurelia.root.controllers.length) {
-            this.viewModel = aurelia.root.controllers[0].viewModel;
-          }
-          this.dispose = () => host.parentNode.removeChild(host);
-          return new Promise(resolve => setTimeout(() => resolve(), 0));
+          this.host = document.createElement('div');
+          this.host.innerHTML = this._html;
+
+          document.body.appendChild(this.host);
+
+          return aurelia.enhance(this._bindingContext, this.host).then(() => {
+            this._rootView = aurelia.root;
+            this.element = this.host.firstElementChild;
+
+            if (aurelia.root.controllers.length) {
+              this.viewModel = aurelia.root.controllers[0].viewModel;
+            }
+
+            return new Promise(resolve => setTimeout(() => resolve(), 0));
+          });
         });
       });
     });
+  }
+
+  dispose() {
+    if (this.host === undefined || this._rootView === undefined) {
+      throw new Error('Cannot call ComponentTester.dispose() before ComponentTester.create()');
+    }
+
+    this._rootView.detached();
+    this._rootView.unbind();
+
+    return this.host.parentNode.removeChild(this.host);
   }
 
   _prepareLifecycle() {

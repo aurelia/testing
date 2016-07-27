@@ -65,27 +65,41 @@ System.register(['aurelia-templating', 'aurelia-framework'], function (_export, 
               if (_this._resources) {
                 aurelia.use.globalResources(_this._resources);
               }
+
               return aurelia.start().then(function (a) {
-                var host = document.createElement('div');
-                host.innerHTML = _this._html;
-                document.body.appendChild(host);
-                aurelia.enhance(_this._bindingContext, host);
-                _this._rootView = aurelia.root;
-                _this.element = host.firstElementChild;
-                if (aurelia.root.controllers.length) {
-                  _this.viewModel = aurelia.root.controllers[0].viewModel;
-                }
-                _this.dispose = function () {
-                  return host.parentNode.removeChild(host);
-                };
-                return new Promise(function (resolve) {
-                  return setTimeout(function () {
-                    return resolve();
-                  }, 0);
+                _this.host = document.createElement('div');
+                _this.host.innerHTML = _this._html;
+
+                document.body.appendChild(_this.host);
+
+                return aurelia.enhance(_this._bindingContext, _this.host).then(function () {
+                  _this._rootView = aurelia.root;
+                  _this.element = _this.host.firstElementChild;
+
+                  if (aurelia.root.controllers.length) {
+                    _this.viewModel = aurelia.root.controllers[0].viewModel;
+                  }
+
+                  return new Promise(function (resolve) {
+                    return setTimeout(function () {
+                      return resolve();
+                    }, 0);
+                  });
                 });
               });
             });
           });
+        };
+
+        ComponentTester.prototype.dispose = function dispose() {
+          if (this.host === undefined || this._rootView === undefined) {
+            throw new Error('Cannot call ComponentTester.dispose() before ComponentTester.create()');
+          }
+
+          this._rootView.detached();
+          this._rootView.unbind();
+
+          return this.host.parentNode.removeChild(this.host);
         };
 
         ComponentTester.prototype._prepareLifecycle = function _prepareLifecycle() {
