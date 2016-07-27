@@ -11,7 +11,6 @@ export class ComponentTester {
   bind: (bindingContext: any) => void;
   attached: () => void;
   unbind: () => void;
-  dispose: () => Promise<any>;
   element: Element;
   viewModel: any;
   configure = aurelia => aurelia.use.standardConfiguration();
@@ -51,22 +50,32 @@ export class ComponentTester {
           aurelia.use.globalResources(this._resources);
         }
         return aurelia.start().then(a => {
-          let host = document.createElement('div');
-          host.innerHTML = this._html;
-          document.body.appendChild(host);
-          aurelia.enhance(this._bindingContext, host);
+          this.host = document.createElement('div');
+          this.host.innerHTML = this._html;
+          document.body.appendChild(this.host);
+          aurelia.enhance(this._bindingContext, this.host);
           this._rootView = aurelia.root;
-          this.element = host.firstElementChild;
+          this.element = this.host.firstElementChild;
           if (aurelia.root.controllers.length) {
             this.viewModel = aurelia.root.controllers[0].viewModel;
           }
-          this.dispose = () => host.parentNode.removeChild(host);
           return new Promise(resolve => setTimeout(() => resolve(), 0));
         });
       });
     });
   }
 
+  dispose() {
+    if (this.host === undefined || this._rootView === undefined) {
+        throw new Error(
+          'Cannot call ComponentTester.dispose() before ComponentTester.create()'
+        );
+    }
+    this._rootView.detached();
+    this._rootView.unbind();
+    return this.host.parentNode.removeChild(this.host);
+  }
+  
   _prepareLifecycle() {
     // bind
     const bindPrototype = View.prototype.bind;
