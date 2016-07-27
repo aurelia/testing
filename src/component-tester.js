@@ -49,7 +49,7 @@ export class ComponentTester {
         if (this._resources) {
           aurelia.use.globalResources(this._resources);
         }
-        
+
         return aurelia.start().then(a => {
           this.host = document.createElement('div');
           this.host.innerHTML = this._html;
@@ -73,12 +73,14 @@ export class ComponentTester {
 
   dispose() {
     if (this.host === undefined || this._rootView === undefined) {
-        throw new Error(
-          'Cannot call ComponentTester.dispose() before ComponentTester.create()'
-        );
+      throw new Error(
+        'Cannot call ComponentTester.dispose() before ComponentTester.create()'
+      );
     }
+
     this._rootView.detached();
     this._rootView.unbind();
+
     return this.host.parentNode.removeChild(this.host);
   }
 
