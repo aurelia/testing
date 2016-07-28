@@ -18,6 +18,10 @@
     "type": "git",
     "url": "http://github.com/aurelia/testing"
   },
+  "scripts": {
+    "test": "gulp test",
+    "ci": "gulp ci"
+  },
   "jspmNodeConversion": false,
   "jspm": {
     "registry": "npm",
@@ -42,9 +46,9 @@
       "aurelia-templating": "^1.0.0"
     },
     "devDependencies": {
-      "babel": "babel-core@^5.8.24",
-      "babel-runtime": "^5.8.24",
-      "core-js": "^1.1.4"
+      "aurelia-bootstrapper": "^1.0.0",
+      "aurelia-pal-browser": "^1.0.0",
+      "aurelia-polyfills": "^1.0.0"
     }
   },
   "dependencies": {
