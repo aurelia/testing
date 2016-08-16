@@ -20,3 +20,4 @@ dependencies:
 test:
   override:
     - gulp build
+    - gulp test
