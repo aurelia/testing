@@ -187,7 +187,7 @@ In some cases, the tested element is not rendered yet when the ``component.creat
 * `getter` (mandatory) is a function that takes no argument and returns an object. `waitForElement` calls this getter multiple times until the returned object is (or is not) a DOM element or a non-empty jQuery set
 * `options` is an object that can have the following properties:
   - `present`: `true` to test for presence, `false` for absence (defaults to `true`)
-  - `interval`: the polling interval (defaults to 100ms)
+  - `interval`: the polling interval (defaults to 50ms)
   - `timeout`: the timeout (defaults to 5s)
 
 The returned promise resolves to the value returned by the `getter` (a DOM element or null, or a jQuery set) or is rejected in the event of a timeout.
