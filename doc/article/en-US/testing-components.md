@@ -176,3 +176,44 @@ The `ComponentTester` exposes a set of properties that can be handy when doing a
 * `unbind` - Manually handles `unbind`.
 * `attached` - Manually handles `attached`.
 * `detached` - Manually handles `detached`.
+* `waitForElement` - Waits until an element is present / absent. See below.
+
+### Testing complex elements
+
+In some cases, the tested element is not rendered yet when the ``component.create()`` promise is resolved, and therefore when the actual test starts. For these situations, `ComponentTester` exposes a `waitForElement(getter, options)` method, which returns a `Promise` that can be used to execute some testing code only once a given element has been detected to be present or absent. It can also be useful when asynchronous actions are executed within your tests (events, animations ...).
+
+`ComponentTester.waitForElement(getter, options)` takes 2 arguments:
+
+* `getter` (mandatory) is a function that takes no argument and returns an object. `waitForElement` calls this getter multiple times until the returned object is (or is not) a DOM element or a non-empty jQuery set
+* `options` is an object that can have the following properties:
+  - `present`: `true` to test for presence, `false` for absence (defaults to `true`)
+  - `interval`: the polling interval (defaults to 100ms)
+  - `timeout`: the timeout (defaults to 5s)
+
+The returned promise resolves to the value returned by the `getter` (a DOM element or null, or a jQuery set) or is rejected in the event of a timeout.
+
+The default values for the `interval` and the `timeout` can be changed using a `ComponentTester` instance's `options` properties (values are in ms).
+
+<code-listing heading="Here is how to wait for the `firstName` input control from the example above:">
+  <source-code lang="JavaScript">
+    component.waitForElement(() => document.querySelector('.firstName')).then((nameElement) => {
+      expect(nameElement.innerHTML).toBe('Bob');
+      done();
+    });
+  </source-code>
+</code-listing>
+
+<code-listing heading="... and here is the same using jQuery:">
+  <source-code lang="JavaScript">
+    component.waitForElement(() => $('.firstName')).then((nameElement) => {
+      expect(nameElement.html()).toBe('Bob');
+      done();
+    });
+  </source-code>
+</code-listing>
+
+<code-listing heading="Waiting for the same element to be absent is as easy as:">
+  <source-code lang="JavaScript">
+    component.waitForElement($('.firstName'), {present: false}).then(done);
+  </source-code>
+</code-listing>
