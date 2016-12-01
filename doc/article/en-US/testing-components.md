@@ -67,7 +67,7 @@ In order to test that the component renders expected HTML, based on what the vie
 
       beforeEach(() => {
         component = StageComponent
-          .withResources('src/my-component')
+          .withResources('my-component')
           .inView('<my-component first-name.bind="firstName"></my-component>')
           .boundTo({ firstName: 'Bob' });
       });
