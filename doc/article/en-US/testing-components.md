@@ -115,7 +115,7 @@ Finally, we call `dispose` on our `ComponentTester` instance. This will clean up
 
 ## [Manually handling lifecycle](aurelia-doc://section/4/version/1.0.0)
 
-When testing a component sometimes you want to have tests run at certain points of the lifecycle.  To do this we can tell the component we created that we will manually handle the lifecycle methods - 
+When testing a component sometimes you want to have tests run at certain points of the lifecycle.  To do this we can tell the component we created that we will manually handle the lifecycle methods -
 
 <code-listing heading="Manually handling lifecycle">
   <source-code lang="JavaScript">
@@ -167,7 +167,7 @@ When testing a component sometimes you want to have tests run at certain points 
       afterEach(() => {
         component.dispose();
       });
-       
+
     });
   </source-code>
 </code-listing>
@@ -228,7 +228,7 @@ As you can see, everything follows the same pattern we had for our custom elemen
 
 ## [Using a Real Parent View-model](aurelia-doc://section/6/version/1.0.0)
 
-If you want to test using a custom element inside of a real parent view-model this can be done just as easily.  This can be really helpful when needing to test the state of a parent that is affected by the child custom element or attribute - 
+If you want to test using a custom element inside of a real parent view-model this can be done just as easily.  This can be really helpful when needing to test the state of a parent that is affected by the child custom element or attribute -
 
 <code-listing heading="A Custom Attribute Test with Real Parent View-model">
   <source-code lang="JavaScript">
@@ -254,7 +254,7 @@ If you want to test using a custom element inside of a real parent view-model th
 
 Using this you can also use the `ref` custom attribute to get access to things and check their state in the view-model.
 
-Or if your view-model has dependencies to load through DI - 
+Or if your view-model has dependencies to load through DI -
 
 <code-listing heading="A Custom Attribute Test with Real Parent View-model with DI dependencies">
   <source-code lang="JavaScript">
@@ -271,7 +271,7 @@ Or if your view-model has dependencies to load through DI -
       let myService;
 
       beforeEach(() => {
-        container = new Container().makeGlobal();
+        container = new Container();
         myService = container.get(MyService);
         viewModel = container.get(MyComponent);
         component = StageComponent
@@ -308,7 +308,7 @@ You can improve the readability of your complex views by using template literals
         `;
         component = StageComponent
             .withResources('src/my-attribute')
-            .inView('')
+            .inView(view)
             .boundTo(viewModel);
       });
       //...
