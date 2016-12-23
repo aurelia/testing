@@ -33,7 +33,7 @@ npm install aurelia-testing
 
 Once you've got the library installed, you can use it in a unit test. In the following examples we will be using Jasmine, but any testing framework would work.
 
-## [Testing a Custom Elements](aurelia-doc://section/3/version/1.0.0)
+## [Testing a Custom Element](aurelia-doc://section/3/version/1.0.0)
 
 Let's start with a simple custom element that we want to test:
 
@@ -112,7 +112,69 @@ Next, we come to the actual test where we call `create` on the `ComponentTester`
 
 Finally, we call `dispose` on our `ComponentTester` instance. This will clean up the DOM so our next test will start out with a clean document. That's pretty much all there is to it. Easy right? Imagine doing the same assert with stand alone unit tests that run outside of Aurelia. It would be pretty difficult, especially for a more complex component.
 
-## [Testing a Custom Attribute](aurelia-doc://section/4/version/1.0.0)
+
+## [Manually handling lifecycle](aurelia-doc://section/4/version/1.0.0)
+
+When testing a component sometimes you want to have tests run at certain points of the lifecycle.  To do this we can tell the component we created that we will manually handle the lifecycle methods - 
+
+<code-listing heading="Manually handling lifecycle">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+    import {bootstrap} from 'aurelia-bootstrapper';
+
+    describe('MyComponent', () => {
+      let component;
+
+      beforeEach(() => {
+        component = StageComponent
+          .withResources('src/my-component')
+          .inView('<my-component first-name.bind="firstName"></my-component>')
+          .boundTo({ firstName: 'Bob' });
+      });
+
+      it('can manually handle lifecycle', done => {
+        let nameElement;
+
+        component.manuallyHandleLifecycle().create()
+          .then(() => {
+            nameElement = document.querySelector('.name');
+            expect(nameElement.innerHTML).toBe(' ');
+          })
+          .then(() => component.bind())
+          .then(() => {
+            expect(nameElement.innerHTML).toBe('Foo bind');
+          })
+          .then(() => component.attached())
+          .then(() => {
+            expect(nameElement.innerHTML).toBe('Foo attached');
+          })
+          .then(() => component.detached())
+          .then(() => component.unbind())
+          .then(() => {
+            expect(component.viewModel.name).toBe(null);
+          })
+          .then(() => component.bind({ name: 'Bar' }))
+          .then(() => {
+            expect(nameElement.innerHTML).toBe('Bar bind');
+          })
+          .then(() => component.attached())
+          .then(() => {
+            expect(nameElement.innerHTML).toBe('Bar attached');
+          })
+          .then(done);
+        });
+
+      afterEach(() => {
+        component.dispose();
+      });
+       
+    });
+  </source-code>
+</code-listing>
+
+As you see, the test helper lets you easily push components through their lifecycle, testing various aspects of it at each point along the way.
+
+## [Testing a Custom Attribute](aurelia-doc://section/5/version/1.0.0)
 
 Testing a Custom Attribute is not much different than testing a Custom Element. Let's look at how it's done by starting with a simple example custom attribute that lets you change the background color of the element it is placed on:
 
@@ -164,7 +226,97 @@ Now, let's assert that the element actually gets the background color it is boun
 
 As you can see, everything follows the same pattern we had for our custom element test. One exception is that we take advantage of the `element` property which gets provided by the `ComponentTester` instance. The `element` property is the actual HTML element that gets rendered. This can also be used when testing custom elements.
 
-## [Helpful Properties and Functions](aurelia-doc://section/5/version/1.0.0)
+## [Using a Real Parent View-model](aurelia-doc://section/6/version/1.0.0)
+
+If you want to test using a custom element inside of a real parent view-model this can be done just as easily.  This can be really helpful when needing to test the state of a parent that is affected by the child custom element or attribute - 
+
+<code-listing heading="A Custom Attribute Test with Real Parent View-model">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+    import {bootstrap} from 'aurelia-bootstrapper';
+    import {MyComponent} from 'src/my-component';
+
+    describe('MyAttribute', () => {
+      let component;
+      let viewModel;
+
+      beforeEach(() => {
+        viewModel = new MyComponent();
+        component = StageComponent
+            .withResources('src/my-attribute')
+            .inView('<div my-attribute.bind="color">Bob</div>')
+            .boundTo(viewModel);
+      });
+      //...
+    });
+  </source-code>
+</code-listing>
+
+Using this you can also use the `ref` custom attribute to get access to things and check their state in the view-model.
+
+Or if your view-model has dependencies to load through DI - 
+
+<code-listing heading="A Custom Attribute Test with Real Parent View-model with DI dependencies">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+    import {bootstrap} from 'aurelia-bootstrapper';
+    import {MyComponent} from 'src/my-component';
+    import {Container} from 'aurelia-dependency-injection';
+    import {MyService} from 'src/my-service';
+
+    describe('MyAttribute', () => {
+      let component;
+      let container;
+      let viewModel;
+      let myService;
+
+      beforeEach(() => {
+        container = new Container().makeGlobal();
+        myService = container.get(MyService);
+        viewModel = container.get(MyComponent);
+        component = StageComponent
+            .withResources('src/my-attribute')
+            .inView('<div my-attribute.bind="color">Bob</div>')
+            .boundTo(viewModel);
+      });
+      //...
+    });
+  </source-code>
+</code-listing>
+
+Now the service dependency for `MyComponent` will be resolved through DI automatically.
+
+## [Improving Readability with Multi-line Strings](aurelia-doc://section/7/version/1.0.0)
+
+You can improve the readability of your complex views by using template literals in your tests -
+
+<code-listing heading="Multi-line Strings for Views">
+  <source-code lang="JavaScript">
+    import {StageComponent} from 'aurelia-testing';
+    import {bootstrap} from 'aurelia-bootstrapper';
+
+    describe('MyAttribute', () => {
+      let component;
+
+      beforeEach(() => {
+        let view = `
+          <div class="row">
+            <div class="col-xs-12">
+              <div my-attribute.bind="color">Bob</div>
+            </div>
+          </div>
+        `;
+        component = StageComponent
+            .withResources('src/my-attribute')
+            .inView('')
+            .boundTo(viewModel);
+      });
+      //...
+    });
+  </source-code>
+</code-listing>
+
+## [Helpful Properties and Functions](aurelia-doc://section/8/version/1.0.0)
 
 The `ComponentTester` exposes a set of properties that can be handy when doing asserts or to stage a component in a specific way. Here's a list of what is available:
 
