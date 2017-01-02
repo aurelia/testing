@@ -43,7 +43,7 @@ export class ComponentTester {
     return this;
   }
 
-  create(bootstrap: (aurelia: Aurelia) => Promise<void>): Promise<void> {
+  create(bootstrap: (configure: (aurelia: Aurelia) => Promise<void>) => Promise<void>): Promise<void> {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
         if (this._resources) {
