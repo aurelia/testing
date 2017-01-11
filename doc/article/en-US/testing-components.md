@@ -228,6 +228,54 @@ Now, let's assert that the element actually gets the background color it is boun
 
 As you can see, everything follows the same pattern we had for our custom element test. One exception is that we take advantage of the `element` property which gets provided by the `ComponentTester` instance. The `element` property is the actual HTML element that gets rendered. This can also be used when testing custom elements.
 
+## [Testing custom component with a real view-model](aurelia-doc://section/?/version/1.0.0)
+
+If you want to test a custom component with a real view-model, mocking
+out all dependencies, you can do this as well.  A common scenario is
+to test the view/view-model, mocking out service calls to the backend.
+
+If the view model has a dependency on a class called Service for all backend communication:
+
+    export class MockService {
+      firstName;
+
+      getFirstName() { return Promise.resolve(this.firstName);
+    }
+    
+    describe('MyComponent', () => {
+      let component;
+      let service = new MockService();
+    
+      beforeEach(() => {
+        service.firstName = undefined;
+    
+        component = StageComponent
+          .withResources('src/component')
+          .inView('<component></component>');
+    
+        component.bootstrap(aurelia => {
+          aurelia.use.standardConfiguration();
+          
+          aurelia.container.registerInstance(Service, service);
+        });
+      });
+    
+      it('should render first name', done => {
+        service.firstName = 'Bob';
+    
+        component.create(bootstrap).then(() => {
+          const nameElement = document.querySelector('.first-name');
+          expect(nameElement.innerHTML).toBe('Bob');
+          
+          done();
+        });
+      });
+
+      afterEach(() => {
+        component.dispose();
+      });
+    });
+
 ## [Using a Real Parent View-model](aurelia-doc://section/6/version/1.0.0)
 
 If you want to test using a custom element inside of a real parent view-model this can be done just as easily.  This can be really helpful when needing to test the state of a parent that is affected by the child custom element or attribute -
