@@ -19,11 +19,6 @@ export class ComponentTester {
   _bindingContext: any;
   _rootView: View;
 
-  waitOptions = {
-    interval: 50,
-    timeout: 5000
-  };
-  
   bootstrap(configure: (aurelia: Aurelia) => void) {
     this.configure = configure;
   }
@@ -123,36 +118,12 @@ export class ComponentTester {
       setTimeout(() => resolve(), 0);
     });
   }
-  
-  waitForElement(getter: () => any, options: any): Promise<Element> {
 
-    // prevents infinite recursion if the request times out
-    var timedOut = false;
+  waitForElement(selector: string, options: any): Promise<Element> {
+    return waitFor(() => this.element.querySelector(selector), options);
+  }
 
-    options = Object.assign({
-      present: true
-    }, this.waitOptions, options);
-
-
-    function wait() {
-      var element = getter(),
-        // boolean is needed here, hence the length > 0
-        found = element !== null && (!element.jquery || element.length > 0);
-
-      if (!options.present^found || timedOut) {
-        return Promise.resolve(element);
-      }
-
-      return new Promise(rs => setTimeout(rs, options.interval)).then(wait);
-    }
-
-    return Promise.race([
-      new Promise((rs, rj) => setTimeout(() => {
-          timedOut = true;
-          rj(options.present ? 'Element not found' : 'Element not removed');
-        }, options.timeout)
-      ),
-      wait()
-    ]);
+  waitForElements(selector: string, options: any): Promise<Element> {
+    return waitFor(() => this.element.querySelectorAll(selector), options);
   }
 }
