@@ -330,3 +330,59 @@ The `ComponentTester` exposes a set of properties that can be handy when doing a
 * `unbind` - Manually handles `unbind`.
 * `attached` - Manually handles `attached`.
 * `detached` - Manually handles `detached`.
+* `waitForElement` and `waitForElements` - Waits until one or several elements are present / absent. See below.
+
+## [Testing complex components](aurelia-doc://section/6/version/1.0.0)
+
+In some cases, the tested element is not rendered yet when the `component.create()` promise is resolved, and therefore when the actual test starts. For these situations, `aurelia-testing` and `ComponentTester` expose helper methods and functions to wait for tested elements to be present in the page.
+
+### Waiting for element(s)
+
+If you want to wait for elements that can be looked up in the DOM using a query passed to `querySelector` or `querySelectorAll`, you can use one of the following: 
+
+* `ComponentTester.waitForElement` or `ComponentTester.waitForElements`: to wait for one or several HTML element(s) within the tested component. The query is carried out using `querySelector` and `querySelectorAll`, respectively.
+* `waitForDocumentElement` or `waitForDocumentElements` (imported from `aurelia-testing`): to wait for one or several HTML element(s) within the document, not restricted to the descendants of the tested component. This is especially useful if you want to wait for elements created by third-party libraries such as context menus, date pickers, etc.
+
+All these methods and functions take 2 arguments:
+
+* `selector` (mandatory): is a selector string to look up the wanted element(s). It must be compatible with `querySelector` and `querySelectorAll`
+* `options` is an object that can have the following properties:
+  - `present`: `true` to test for presence, `false` for absence (defaults to `true`)
+  - `interval`: the polling interval (defaults to 50ms)
+  - `timeout`: the timeout (defaults to 5s)
+
+They all return a `Promise` that resolves to an `Element` (`waitForElement`) or a `NodeList` (`waitForElements`). The `Promise` is rejected in the event of a timeout. The returned `Promise` can be used to execute some testing code only once a given element has been detected to be present or absent, either because the component was slow to be fully rendered or because the test relies on asynchronous actions such as events or animations.
+
+### Waiting for matches to complex queries ... or anything else
+
+If your query is complex (with non-trivial jQuery lookups for example), or you want to wait for the result of a callback to be something else than `null`, you can use the higher-level `waitFor` function imported from `aurelia-testing`.
+
+`waitFor(getter, options)` works exactly the same way as the previously described methods and functions, but takes a callback (`getter`) as the first argument instead of a selector string. `waitFor` internally calls `getter` with no arguments at regular intervals times until the returned value is anything else than `null`, an empty `NodeList` or jQuery set. The returned `Promise` will resolve to the result of `getter()`.
+
+### Examples
+
+<code-listing heading="Here is how to wait for the `firstName` input control from the example above:">
+  <source-code lang="JavaScript">
+    component.waitForElement('.firstName').then((nameElement) => {
+      expect(nameElement.innerHTML).toBe('Bob');
+      done();
+    });
+  </source-code>
+</code-listing>
+
+<code-listing heading="... and here is the same using jQuery:">
+  <source-code lang="JavaScript">
+    import {waitFor} from 'aurelia-testing';
+    
+    waitFor(() => $('.firstName')).then((nameElement) => {
+      expect(nameElement.html()).toBe('Bob');
+      done();
+    });
+  </source-code>
+</code-listing>
+
+<code-listing heading="Waiting for the same element to be absent but timeout after 2s is as easy as:">
+  <source-code lang="JavaScript">
+    component.waitForElement('.firstName', {present: false, timeout: 2000}).then(done);
+  </source-code>
+</code-listing>

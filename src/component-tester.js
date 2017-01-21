@@ -118,4 +118,12 @@ export class ComponentTester {
       setTimeout(() => resolve(), 0);
     });
   }
+
+  waitForElement(selector: string, options: any): Promise<Element> {
+    return waitFor(() => this.element.querySelector(selector), options);
+  }
+
+  waitForElements(selector: string, options: any): Promise<Element> {
+    return waitFor(() => this.element.querySelectorAll(selector), options);
+  }
 }
