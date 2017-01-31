@@ -1,11 +1,11 @@
 import {View} from 'aurelia-templating';
 import {Aurelia} from 'aurelia-framework';
 
-export const StageComponent = {
-  withResources(resources): ComponentTester {
+export class StageComponent {
+  static withResources(resources: string | string[]): ComponentTester {
     return new ComponentTester().withResources(resources);
   }
-};
+}
 
 export class ComponentTester {
   bind: (bindingContext: any) => void;
@@ -43,7 +43,7 @@ export class ComponentTester {
     return this;
   }
 
-  create(bootstrap: (aurelia: Aurelia) => Promise<void>): Promise<void> {
+  create(bootstrap: (configure: (aurelia: Aurelia) => Promise<void>) => Promise<void>): Promise<void> {
     return bootstrap(aurelia => {
       return Promise.resolve(this.configure(aurelia)).then(() => {
         if (this._resources) {
