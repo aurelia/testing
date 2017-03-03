@@ -7,6 +7,10 @@ exports.CompileSpy = exports.ViewSpy = exports.ComponentTester = exports.StageCo
 
 var _dec, _class2, _dec2, _dec3, _class3;
 
+exports.waitFor = waitFor;
+exports.waitForDocumentElement = waitForDocumentElement;
+exports.waitForDocumentElements = waitForDocumentElements;
+
 var _aureliaLogging = require('aurelia-logging');
 
 var LogManager = _interopRequireWildcard(_aureliaLogging);
@@ -23,11 +27,60 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var StageComponent = exports.StageComponent = {
-  withResources: function withResources(resources) {
-    return new ComponentTester().withResources(resources);
+function waitFor(getter, options) {
+  var timedOut = false;
+
+  options = Object.assign({
+    present: true,
+    interval: 50,
+    timeout: 5000
+  }, options);
+
+  function wait() {
+    var element = getter();
+
+    var found = element !== null && (!(element instanceof NodeList) && !element.jquery || element.length > 0);
+
+    if (!options.present ^ found || timedOut) {
+      return Promise.resolve(element);
+    }
+
+    return new Promise(function (rs) {
+      return setTimeout(rs, options.interval);
+    }).then(wait);
   }
-};
+
+  return Promise.race([new Promise(function (rs, rj) {
+    return setTimeout(function () {
+      timedOut = true;
+      rj(options.present ? 'Element not found' : 'Element not removed');
+    }, options.timeout);
+  }), wait()]);
+}
+
+function waitForDocumentElement(selector, options) {
+  return waitFor(function () {
+    return document.querySelector(selector);
+  }, options);
+}
+
+function waitForDocumentElements(selector, options) {
+  return waitFor(function () {
+    return document.querySelectorAll(selector);
+  }, options);
+}
+
+var StageComponent = exports.StageComponent = function () {
+  function StageComponent() {
+    _classCallCheck(this, StageComponent);
+  }
+
+  StageComponent.withResources = function withResources(resources) {
+    return new ComponentTester().withResources(resources);
+  };
+
+  return StageComponent;
+}();
 
 var ComponentTester = exports.ComponentTester = function () {
   function ComponentTester() {
@@ -156,6 +209,22 @@ var ComponentTester = exports.ComponentTester = function () {
         }, 0);
       });
     };
+  };
+
+  ComponentTester.prototype.waitForElement = function waitForElement(selector, options) {
+    var _this3 = this;
+
+    return waitFor(function () {
+      return _this3.element.querySelector(selector);
+    }, options);
+  };
+
+  ComponentTester.prototype.waitForElements = function waitForElements(selector, options) {
+    var _this4 = this;
+
+    return waitFor(function () {
+      return _this4.element.querySelectorAll(selector);
+    }, options);
   };
 
   return ComponentTester;

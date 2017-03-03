@@ -14,11 +14,17 @@ System.register(['aurelia-templating', 'aurelia-framework'], function (_export, 
       Aurelia = _aureliaFramework.Aurelia;
     }],
     execute: function () {
-      _export('StageComponent', StageComponent = {
-        withResources: function withResources(resources) {
-          return new ComponentTester().withResources(resources);
+      _export('StageComponent', StageComponent = function () {
+        function StageComponent() {
+          
         }
-      });
+
+        StageComponent.withResources = function withResources(resources) {
+          return new ComponentTester().withResources(resources);
+        };
+
+        return StageComponent;
+      }());
 
       _export('StageComponent', StageComponent);
 
@@ -149,6 +155,22 @@ System.register(['aurelia-templating', 'aurelia-framework'], function (_export, 
               }, 0);
             });
           };
+        };
+
+        ComponentTester.prototype.waitForElement = function waitForElement(selector, options) {
+          var _this3 = this;
+
+          return waitFor(function () {
+            return _this3.element.querySelector(selector);
+          }, options);
+        };
+
+        ComponentTester.prototype.waitForElements = function waitForElements(selector, options) {
+          var _this4 = this;
+
+          return waitFor(function () {
+            return _this4.element.querySelectorAll(selector);
+          }, options);
         };
 
         return ComponentTester;

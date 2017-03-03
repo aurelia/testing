@@ -3,11 +3,17 @@
 import { View } from 'aurelia-templating';
 import { Aurelia } from 'aurelia-framework';
 
-export var StageComponent = {
-  withResources: function withResources(resources) {
-    return new ComponentTester().withResources(resources);
+export var StageComponent = function () {
+  function StageComponent() {
+    
   }
-};
+
+  StageComponent.withResources = function withResources(resources) {
+    return new ComponentTester().withResources(resources);
+  };
+
+  return StageComponent;
+}();
 
 export var ComponentTester = function () {
   function ComponentTester() {
@@ -136,6 +142,22 @@ export var ComponentTester = function () {
         }, 0);
       });
     };
+  };
+
+  ComponentTester.prototype.waitForElement = function waitForElement(selector, options) {
+    var _this3 = this;
+
+    return waitFor(function () {
+      return _this3.element.querySelector(selector);
+    }, options);
+  };
+
+  ComponentTester.prototype.waitForElements = function waitForElements(selector, options) {
+    var _this4 = this;
+
+    return waitFor(function () {
+      return _this4.element.querySelectorAll(selector);
+    }, options);
   };
 
   return ComponentTester;

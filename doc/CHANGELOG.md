@@ -1,3 +1,18 @@
+<a name="1.0.0-beta.3.0.0"></a>
+# [1.0.0-beta.3.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.2.0.1...v1.0.0-beta.3.0.0) (2017-03-03)
+
+
+### Bug Fixes
+
+* **typings:** Typings for StageComponent ([#52](https://github.com/aurelia/testing/issues/52)) ([01036e7](https://github.com/aurelia/testing/commit/01036e7)), closes [#46](https://github.com/aurelia/testing/issues/46)
+
+
+### Features
+
+* **component-tester:** add waitForElement method and options ([#32](https://github.com/aurelia/testing/issues/32)) ([65eb382](https://github.com/aurelia/testing/commit/65eb382))
+
+
+
 <a name="1.0.0-beta.2.0.0"></a>
 # [1.0.0-beta.2.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.1.0.3...v1.0.0-beta.2.0.0) (2016-07-27)
 

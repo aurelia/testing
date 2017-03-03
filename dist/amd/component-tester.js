@@ -8,11 +8,17 @@ define(['exports', 'aurelia-templating', 'aurelia-framework'], function (exports
 
   
 
-  var StageComponent = exports.StageComponent = {
-    withResources: function withResources(resources) {
-      return new ComponentTester().withResources(resources);
+  var StageComponent = exports.StageComponent = function () {
+    function StageComponent() {
+      
     }
-  };
+
+    StageComponent.withResources = function withResources(resources) {
+      return new ComponentTester().withResources(resources);
+    };
+
+    return StageComponent;
+  }();
 
   var ComponentTester = exports.ComponentTester = function () {
     function ComponentTester() {
@@ -141,6 +147,22 @@ define(['exports', 'aurelia-templating', 'aurelia-framework'], function (exports
           }, 0);
         });
       };
+    };
+
+    ComponentTester.prototype.waitForElement = function waitForElement(selector, options) {
+      var _this3 = this;
+
+      return waitFor(function () {
+        return _this3.element.querySelector(selector);
+      }, options);
+    };
+
+    ComponentTester.prototype.waitForElements = function waitForElements(selector, options) {
+      var _this4 = this;
+
+      return waitFor(function () {
+        return _this4.element.querySelectorAll(selector);
+      }, options);
     };
 
     return ComponentTester;

@@ -13,7 +13,21 @@ import {
 import {
   DOM
 } from 'aurelia-pal';
-export declare const StageComponent: any;
+
+/**
+ * Generic function to wait for something to happen. Uses polling
+ * @param getter: a getter function that returns anything else than `null` or an
+ *                empty array or an empty jQuery object when the
+ *                condition is met
+ * @param options: lookup options, defaults to
+ *                 `{present: true, interval: 50, timeout: 5000}`
+ */
+export declare function waitFor(getter: (() => any), options: any): Promise<any>;
+export declare function waitForDocumentElement(selector: string, options: any): Promise<Element>;
+export declare function waitForDocumentElements(selector: string, options: any): Promise<Element>;
+export declare class StageComponent {
+  static withResources(resources: string | string[]): ComponentTester;
+}
 export declare class ComponentTester {
   bind: ((bindingContext: any) => void);
   attached: (() => void);
@@ -26,8 +40,10 @@ export declare class ComponentTester {
   inView(html: string): ComponentTester;
   boundTo(bindingContext: any): ComponentTester;
   manuallyHandleLifecycle(): ComponentTester;
-  create(bootstrap: ((aurelia: Aurelia) => Promise<void>)): Promise<void>;
+  create(bootstrap: ((configure: ((aurelia: Aurelia) => Promise<void>)) => Promise<void>)): Promise<void>;
   dispose(): any;
+  waitForElement(selector: string, options: any): Promise<Element>;
+  waitForElements(selector: string, options: any): Promise<Element>;
 }
 
 /**

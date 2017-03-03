@@ -1,8 +1,8 @@
 import { View } from 'aurelia-templating';
 import { Aurelia } from 'aurelia-framework';
 
-export const StageComponent = {
-  withResources(resources) {
+export let StageComponent = class StageComponent {
+  static withResources(resources) {
     return new ComponentTester().withResources(resources);
   }
 };
@@ -106,5 +106,13 @@ export let ComponentTester = class ComponentTester {
       this._rootView.unbind();
       setTimeout(() => resolve(), 0);
     });
+  }
+
+  waitForElement(selector, options) {
+    return waitFor(() => this.element.querySelector(selector), options);
+  }
+
+  waitForElements(selector, options) {
+    return waitFor(() => this.element.querySelectorAll(selector), options);
   }
 };
