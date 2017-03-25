@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.3.0.1"></a>
+# [1.0.0-beta.3.0.1](https://github.com/aurelia/testing/compare/1.0.0-beta.3.0.0...v1.0.0-beta.3.0.1) (2017-03-25)
+
+
+### Bug Fixes
+
+* **ComponentTester:** import missing waitFor function ([#60](https://github.com/aurelia/testing/issues/60)) ([1ecfbfe](https://github.com/aurelia/testing/commit/1ecfbfe))
+* **ComponentTester:** withResources args are optional ([2154b8f](https://github.com/aurelia/testing/commit/2154b8f))
+
+
+
 <a name="1.0.0-beta.3.0.0"></a>
 # [1.0.0-beta.3.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.2.0.1...v1.0.0-beta.3.0.0) (2017-03-03)
 

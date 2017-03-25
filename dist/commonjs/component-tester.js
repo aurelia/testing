@@ -9,6 +9,8 @@ var _aureliaTemplating = require('aurelia-templating');
 
 var _aureliaFramework = require('aurelia-framework');
 
+var _wait = require('./wait');
+
 
 
 var StageComponent = exports.StageComponent = function () {
@@ -155,7 +157,7 @@ var ComponentTester = exports.ComponentTester = function () {
   ComponentTester.prototype.waitForElement = function waitForElement(selector, options) {
     var _this3 = this;
 
-    return waitFor(function () {
+    return (0, _wait.waitFor)(function () {
       return _this3.element.querySelector(selector);
     }, options);
   };
@@ -163,7 +165,7 @@ var ComponentTester = exports.ComponentTester = function () {
   ComponentTester.prototype.waitForElements = function waitForElements(selector, options) {
     var _this4 = this;
 
-    return waitFor(function () {
+    return (0, _wait.waitFor)(function () {
       return _this4.element.querySelectorAll(selector);
     }, options);
   };

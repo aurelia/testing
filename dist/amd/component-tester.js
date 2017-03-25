@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-templating', 'aurelia-framework'], function (exports, _aureliaTemplating, _aureliaFramework) {
+define(['exports', 'aurelia-templating', 'aurelia-framework', './wait'], function (exports, _aureliaTemplating, _aureliaFramework, _wait) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -152,7 +152,7 @@ define(['exports', 'aurelia-templating', 'aurelia-framework'], function (exports
     ComponentTester.prototype.waitForElement = function waitForElement(selector, options) {
       var _this3 = this;
 
-      return waitFor(function () {
+      return (0, _wait.waitFor)(function () {
         return _this3.element.querySelector(selector);
       }, options);
     };
@@ -160,7 +160,7 @@ define(['exports', 'aurelia-templating', 'aurelia-framework'], function (exports
     ComponentTester.prototype.waitForElements = function waitForElements(selector, options) {
       var _this4 = this;
 
-      return waitFor(function () {
+      return (0, _wait.waitFor)(function () {
         return _this4.element.querySelectorAll(selector);
       }, options);
     };

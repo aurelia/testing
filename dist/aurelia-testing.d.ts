@@ -1,18 +1,18 @@
 import * as LogManager from 'aurelia-logging';
 import {
-  View,
   customAttribute,
-  TargetInstruction
+  TargetInstruction,
+  View
 } from 'aurelia-templating';
-import {
-  Aurelia
-} from 'aurelia-framework';
 import {
   inject
 } from 'aurelia-dependency-injection';
 import {
   DOM
 } from 'aurelia-pal';
+import {
+  Aurelia
+} from 'aurelia-framework';
 
 /**
  * Generic function to wait for something to happen. Uses polling
@@ -25,26 +25,6 @@ import {
 export declare function waitFor(getter: (() => any), options: any): Promise<any>;
 export declare function waitForDocumentElement(selector: string, options: any): Promise<Element>;
 export declare function waitForDocumentElements(selector: string, options: any): Promise<Element>;
-export declare class StageComponent {
-  static withResources(resources: string | string[]): ComponentTester;
-}
-export declare class ComponentTester {
-  bind: ((bindingContext: any) => void);
-  attached: (() => void);
-  unbind: (() => void);
-  element: Element;
-  viewModel: any;
-  configure: any;
-  bootstrap(configure: ((aurelia: Aurelia) => void)): any;
-  withResources(resources: string | string[]): ComponentTester;
-  inView(html: string): ComponentTester;
-  boundTo(bindingContext: any): ComponentTester;
-  manuallyHandleLifecycle(): ComponentTester;
-  create(bootstrap: ((configure: ((aurelia: Aurelia) => Promise<void>)) => Promise<void>)): Promise<void>;
-  dispose(): any;
-  waitForElement(selector: string, options: any): Promise<Element>;
-  waitForElements(selector: string, options: any): Promise<Element>;
-}
 
 /**
 * Attribute to be placed on any HTML element in a view to emit the View instance
@@ -99,4 +79,24 @@ export declare class CompileSpy {
     * @param instruction instructions for how the target element should be enhanced.
     */
   constructor(element?: any, instruction?: any);
+}
+export declare class StageComponent {
+  static withResources(resources?: string | string[]): ComponentTester;
+}
+export declare class ComponentTester {
+  bind: ((bindingContext: any) => void);
+  attached: (() => void);
+  unbind: (() => void);
+  element: Element;
+  viewModel: any;
+  configure: any;
+  bootstrap(configure: ((aurelia: Aurelia) => void)): any;
+  withResources(resources: string | string[]): ComponentTester;
+  inView(html: string): ComponentTester;
+  boundTo(bindingContext: any): ComponentTester;
+  manuallyHandleLifecycle(): ComponentTester;
+  create(bootstrap: ((configure: ((aurelia: Aurelia) => Promise<void>)) => Promise<void>)): Promise<void>;
+  dispose(): any;
+  waitForElement(selector: string, options: any): Promise<Element>;
+  waitForElements(selector: string, options: any): Promise<Element>;
 }

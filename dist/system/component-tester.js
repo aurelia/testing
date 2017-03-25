@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['aurelia-templating', 'aurelia-framework'], function (_export, _context) {
+System.register(['aurelia-templating', 'aurelia-framework', './wait'], function (_export, _context) {
   "use strict";
 
-  var View, Aurelia, StageComponent, ComponentTester;
+  var View, Aurelia, waitFor, StageComponent, ComponentTester;
 
   
 
@@ -12,6 +12,8 @@ System.register(['aurelia-templating', 'aurelia-framework'], function (_export, 
       View = _aureliaTemplating.View;
     }, function (_aureliaFramework) {
       Aurelia = _aureliaFramework.Aurelia;
+    }, function (_wait) {
+      waitFor = _wait.waitFor;
     }],
     execute: function () {
       _export('StageComponent', StageComponent = function () {

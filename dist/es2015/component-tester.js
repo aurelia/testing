@@ -1,5 +1,6 @@
 import { View } from 'aurelia-templating';
 import { Aurelia } from 'aurelia-framework';
+import { waitFor } from './wait';
 
 export let StageComponent = class StageComponent {
   static withResources(resources) {
