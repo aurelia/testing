@@ -20,6 +20,10 @@ export class ComponentTester {
   _bindingContext: any;
   _rootView: View;
 
+  constructor(){
+    this.waitFor = waitFor;
+  }
+
   bootstrap(configure: (aurelia: Aurelia) => void) {
     this.configure = configure;
   }
@@ -121,10 +125,19 @@ export class ComponentTester {
   }
 
   waitForElement(selector: string, options: any): Promise<Element> {
-    return waitFor(() => this.element.querySelector(selector), options);
+    return waitFor(() => {
+      return this.element.querySelector(selector)
+    }, options);
   }
 
   waitForElements(selector: string, options: any): Promise<Element> {
-    return waitFor(() => this.element.querySelectorAll(selector), options);
+    return waitFor(() => {
+      let element = this.element.querySelectorAll(selector)
+      // boolean is needed here, hence the length > 0
+      if(element !== null && (!(element instanceof NodeList) && !element.jquery || element.length > 0)){
+        return element
+      }
+      return false
+    }, options);
   }
 }
