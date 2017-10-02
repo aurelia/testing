@@ -228,7 +228,7 @@ Now, let's assert that the element actually gets the background color it is boun
 
 As you can see, everything follows the same pattern we had for our custom element test. One exception is that we take advantage of the `element` property which gets provided by the `ComponentTester` instance. The `element` property is the actual HTML element that gets rendered. This can also be used when testing custom elements.
 
-## [Testing custom component with a real view-model](aurelia-doc://section/?/version/1.0.0)
+## [Testing custom component with a real view-model](aurelia-doc://section/6/version/1.0.0)
 
 If you want to test a custom component with a real view-model, mocking
 out all dependencies, you can do this as well.  A common scenario is
@@ -236,6 +236,8 @@ to test the view/view-model, mocking out service calls to the backend.
 
 If the view model has a dependency on a class called Service for all backend communication:
 
+<code-listing heading="A Custom Component with a Real View-model">
+  <source-code lang="JavaScript">
     export class MockService {
       firstName;
 
@@ -275,8 +277,10 @@ If the view model has a dependency on a class called Service for all backend com
         component.dispose();
       });
     });
+  </source-code>
+</code-listing>
 
-## [Using a Real Parent View-model](aurelia-doc://section/6/version/1.0.0)
+## [Using a Real Parent View-model](aurelia-doc://section/7/version/1.0.0)
 
 If you want to test using a custom element inside of a real parent view-model this can be done just as easily.  This can be really helpful when needing to test the state of a parent that is affected by the child custom element or attribute -
 
@@ -336,7 +340,7 @@ Or if your view-model has dependencies to load through DI -
 
 Now the service dependency for `MyComponent` will be resolved through DI automatically.
 
-## [Improving Readability with Multi-line Strings](aurelia-doc://section/7/version/1.0.0)
+## [Improving Readability with Multi-line Strings](aurelia-doc://section/8/version/1.0.0)
 
 You can improve the readability of your complex views by using template literals in your tests -
 
@@ -366,7 +370,7 @@ You can improve the readability of your complex views by using template literals
   </source-code>
 </code-listing>
 
-## [Helpful Properties and Functions](aurelia-doc://section/8/version/1.0.0)
+## [Helpful Properties and Functions](aurelia-doc://section/9/version/1.0.0)
 
 The `ComponentTester` exposes a set of properties that can be handy when doing asserts or to stage a component in a specific way. Here's a list of what is available:
 
@@ -380,7 +384,7 @@ The `ComponentTester` exposes a set of properties that can be handy when doing a
 * `detached` - Manually handles `detached`.
 * `waitForElement` and `waitForElements` - Waits until one or several elements are present / absent. See below.
 
-## [Testing complex components](aurelia-doc://section/6/version/1.0.0)
+## [Testing complex components](aurelia-doc://section/10/version/1.0.0)
 
 In some cases, the tested element is not rendered yet when the `component.create()` promise is resolved, and therefore when the actual test starts. For these situations, `aurelia-testing` and `ComponentTester` expose helper methods and functions to wait for tested elements to be present in the page.
 
