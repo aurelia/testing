@@ -3,43 +3,44 @@ import {Aurelia} from 'aurelia-framework';
 import {waitFor} from './wait';
 
 export class StageComponent {
-  static withResources(resources?: string | string[]): ComponentTester {
+  static withResources<T = any>(resources?: string | string[]): ComponentTester<T> {
     return new ComponentTester().withResources(resources);
   }
 }
 
-export class ComponentTester {
-  bind: (bindingContext: any) => void;
-  attached: () => void;
-  unbind: () => void;
+export class ComponentTester<T = any> {
+  bind: (bindingContext?: {}) => Promise<void>;
+  attached: () => Promise<void>;
+  detached: () => Promise<void>;
+  unbind: () => Promise<void>;
   element: Element;
-  viewModel: any;
+  viewModel: T;
   configure = aurelia => aurelia.use.standardConfiguration();
   _html: string;
   _resources: string | string[] = [];
-  _bindingContext: any;
+  _bindingContext: {};
   _rootView: View;
 
   bootstrap(configure: (aurelia: Aurelia) => void) {
     this.configure = configure;
   }
 
-  withResources(resources: string | string[]): ComponentTester {
+  withResources(resources: string | string[]): ComponentTester<T> {
     this._resources = resources;
     return this;
   }
 
-  inView(html: string): ComponentTester {
+  inView(html: string): ComponentTester<T> {
     this._html = html;
     return this;
   }
 
-  boundTo(bindingContext: any): ComponentTester {
+  boundTo(bindingContext: {}): ComponentTester<T> {
     this._bindingContext = bindingContext;
     return this;
   }
 
-  manuallyHandleLifecycle(): ComponentTester {
+  manuallyHandleLifecycle(): ComponentTester<T> {
     this._prepareLifecycle();
     return this;
   }
@@ -72,7 +73,7 @@ export class ComponentTester {
     });
   }
 
-  dispose() {
+  dispose(): Element {
     if (this.host === undefined || this._rootView === undefined) {
       throw new Error(
         'Cannot call ComponentTester.dispose() before ComponentTester.create()'
@@ -120,11 +121,11 @@ export class ComponentTester {
     });
   }
 
-  waitForElement(selector: string, options: any): Promise<Element> {
+  waitForElement(selector: string, options?: { present?: boolean, interval?: number, timeout?: number }): Promise<Element> {
     return waitFor(() => this.element.querySelector(selector), options);
   }
 
-  waitForElements(selector: string, options: any): Promise<Element> {
+  waitForElements(selector: string, options?: { present?: boolean, interval?: number, timeout?: number }): Promise<Element> {
     return waitFor(() => this.element.querySelectorAll(selector), options);
   }
 }

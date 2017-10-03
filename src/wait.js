@@ -6,7 +6,7 @@
  * @param options: lookup options, defaults to
  *                 `{present: true, interval: 50, timeout: 5000}`
  */
-export function waitFor(getter: () => any, options: any): Promise<any> {
+export function waitFor(getter: () => any, options?: { present?: boolean, interval?: number, timeout?: number }): Promise<any> {
   // prevents infinite recursion if the request times out
   let timedOut = false;
 
