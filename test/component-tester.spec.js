@@ -35,6 +35,31 @@ describe('ComponentTester', () => {
       });
     });
   });
+
+  it('should wait for a custom condition', (done) => {
+    component.create(bootstrap).then(() => {
+      component.waitFor(() => {
+        return true
+      }).then((value) => {
+        expect(value).toBe(true);
+        done();
+      });
+    });
+  });
+
+  it('should fail when custom condition does not become true before timeout', (done) => {
+    component.create(bootstrap).then(() => {
+      component.waitFor(() => false, {timeout:500}).then((value) => {
+        fail();
+        done();
+      }, (error) => {
+        expect(error).toBeTruthy();
+        done();
+      });
+    });
+  });
+
+
   afterEach(() => {
     component.dispose();
   });
