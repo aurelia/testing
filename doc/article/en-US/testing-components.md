@@ -108,7 +108,8 @@ Running the test should result in the following html should be rendered `<div cl
 
 `StageComponent` comes with one property, `withResources`, that lets you start off the staging with a fluent API. `withResources` lets you specify which resource or resources for Aurelia to register.  It takes either a string for registering one single resource or an Array of strings for registering multiple resources. `inView` lets you provide the html markup to be run. This is just a standard Aurelia view where you can do all the data binding you are used to in a full-blown Aurelia application. `boundTo` lets you provide a test `viewModel` with the data that the view will get bound to. In this example, the staging of the component is done in Jasmine's `beforeEach` method in order to reuse the same setup for multiple tests.
 
-> Note: If you are using `karma` and your configuration already has a path for `'*': 'src/*'` set you may not need to use `src/`, and just `my-component`.
+> Info
+> If you are using `karma` and your configuration already has a path for `'*': 'src/*'` set you may not need to use `src/`, and just `my-component`.
 
 Next, we come to the actual test where we call `create` on the `ComponentTester`. Create will kick everything off and bootstrap the mini Aurelia application, configure it with `standardConfiguration` (we will take a look later at how you can run with your own configuration), register provided resources as global resources, start the application and finally render your component so you can assert the expected behavior. In this case, we want to make sure our `firstName` property gets rendered correctly in the HTML by selecting the `div` tag via it's class name. We use `document.querySelector('.firstName');` to grab that and then check that its innerHTML is `Bob`. Next we call Jasmine's `done` function to tell Jasmine that the test is complete. Calling `done` is needed since the `create` method is asynchronous and returns a Promise.
 
@@ -243,32 +244,32 @@ If the view model has a dependency on a class called Service for all backend com
 
       getFirstName() { return Promise.resolve(this.firstName);
     }
-    
+
     describe('MyComponent', () => {
       let component;
       let service = new MockService();
-    
+
       beforeEach(() => {
         service.firstName = undefined;
-    
+
         component = StageComponent
           .withResources('src/component')
           .inView('<component></component>');
-    
+
         component.bootstrap(aurelia => {
           aurelia.use.standardConfiguration();
-          
+
           aurelia.container.registerInstance(Service, service);
         });
       });
-    
+
       it('should render first name', done => {
         service.firstName = 'Bob';
-    
+
         component.create(bootstrap).then(() => {
           const nameElement = document.querySelector('.first-name');
           expect(nameElement.innerHTML).toBe('Bob');
-          
+
           done();
         });
       });
@@ -390,7 +391,7 @@ In some cases, the tested element is not rendered yet when the `component.create
 
 ### Waiting for element(s)
 
-If you want to wait for elements that can be looked up in the DOM using a query passed to `querySelector` or `querySelectorAll`, you can use one of the following: 
+If you want to wait for elements that can be looked up in the DOM using a query passed to `querySelector` or `querySelectorAll`, you can use one of the following:
 
 * `ComponentTester.waitForElement` or `ComponentTester.waitForElements`: to wait for one or several HTML element(s) within the tested component. The query is carried out using `querySelector` and `querySelectorAll`, respectively.
 * `waitForDocumentElement` or `waitForDocumentElements` (imported from `aurelia-testing`): to wait for one or several HTML element(s) within the document, not restricted to the descendants of the tested component. This is especially useful if you want to wait for elements created by third-party libraries such as context menus, date pickers, etc.
@@ -425,7 +426,7 @@ If your query is complex (with non-trivial jQuery lookups for example), or you w
 <code-listing heading="... and here is the same using jQuery:">
   <source-code lang="JavaScript">
     import {waitFor} from 'aurelia-testing';
-    
+
     waitFor(() => $('.firstName')).then((nameElement) => {
       expect(nameElement.html()).toBe('Bob');
       done();
