@@ -1,7 +1,18 @@
 // Karma configuration
-// Generated on Fri Dec 05 2014 16:49:29 GMT-0500 (EST)
+// Generated on Sun Aug 28 2016 19:03:27 GMT-0400 (Eastern Daylight Time)
 
-module.exports = function(config) {
+var TemplateServerMiddlewareFactory = function (config) {
+  var TEMPLATE_REQUEST_REGEXP = /^\/base\/dist\/test\/.+\.html$/i;
+  return function (req, res, next) {
+    if(TEMPLATE_REQUEST_REGEXP.test(req.url)) {
+      req.url = req.url.replace(/^\/base\/dist\/test\//, '/base/');
+    }
+
+    next();
+  };
+}
+
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -10,40 +21,29 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jspm', 'jasmine'],
+    frameworks: ['jasmine', 'requirejs'],
 
-    jspm: {
-      // Edit this to your needs
-      loadFiles: ['test/setup.js', 'test/**/*.spec.js'],
-      serveFiles: ['src/**/*.js', 'test/resources/**/*']
-    },
-
+    beforeMiddleware: ['template-server'],
+    plugins: config.plugins.concat([
+      {'middleware:template-server': ['factory', TemplateServerMiddlewareFactory]}
+    ]),
 
     // list of files / patterns to load in the browser
-    files: [],
+    files: [
+      'dist/test/test/setup.js',
+      { pattern: 'dist/test/**/*.js', included: false, watched: true },
+      { pattern: '**/*.html', included: false, watched: true },
+      { pattern: 'node_modules/**/*.js', included: false, watched: false },
+    ],
 
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/**/*.js': ['babel'],
-      'src/**/*.js': ['babel']
-    },
-    'babelPreprocessor': {
-      options: {
-        sourceMap: 'inline',
-        presets: [ 'es2015-loose', 'stage-1'],
-        plugins: [
-          'syntax-flow',
-          'transform-decorators-legacy',
-          'transform-flow-strip-types'
-        ]
-      }
     },
 
 
@@ -77,6 +77,10 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
-  });
-};
+    singleRun: false,
+
+    // Concurrency level
+    // how many browser should be started simultaneous
+    concurrency: Infinity
+  })
+}

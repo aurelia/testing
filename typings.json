@@ -1,4 +1,4 @@
 {
   "name": "aurelia-testing",
-  "main": "dist/aurelia-testing.d.ts"
+  "main": "dist/amd/aurelia-testing.d.ts"
 }
