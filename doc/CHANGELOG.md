@@ -1,3 +1,8 @@
+<a name="1.0.0-beta.4.0.0"></a>
+# [1.0.0-beta.4.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.3.0.1...1.0.0-beta.4.0.0) (2017-11-06)
+
+This entire library was converted to TypeScript. This doesn't involve any breaking changes to the functionality, but the TypeScript definitions are now more accurate and could result in some requried code fixups for TS consumers.
+
 <a name="1.0.0-beta.3.0.1"></a>
 # [1.0.0-beta.3.0.1](https://github.com/aurelia/testing/compare/1.0.0-beta.3.0.0...v1.0.0-beta.3.0.1) (2017-03-25)
 
@@ -97,4 +102,3 @@
   * support lifecycle testing ([cd9bd78a](http://github.com/aurelia/testing/commit/cd9bd78a0905c0e4900a6f4fbc67ef1e30990075))
   * enable custom bootstrap ([50d1d72a](http://github.com/aurelia/testing/commit/50d1d72aa5af9ed5e8fd20efdf7fade027baccb2))
   * initial poc ([1db19514](http://github.com/aurelia/testing/commit/1db195142715503746e49e179c044c0ad39a4763))
-
