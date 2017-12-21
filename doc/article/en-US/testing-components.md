@@ -21,13 +21,13 @@ With the Component Tester you can easily stage a custom element or custom attrib
 
 If you are using JSPM:
 
-```shell
+```Shell
 jspm install aurelia-testing
 ```
 
 If you are using NPM:
 
-```shell
+```Shell
 npm install aurelia-testing
 ```
 
