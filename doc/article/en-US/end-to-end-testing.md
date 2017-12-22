@@ -1,17 +1,7 @@
 ---
-{
-  "name": "End to End Testing",
-  "culture": "en-US",
-  "description": "Testing front-end applications has become an important task for today's developers. Not only do you want to ensure that your application's internal code operates correctly, but you also want to validate the in-browser behavior. This article will show you how to achieve this by combining Aurelia and Protractor.",
-  "engines" : { "aurelia-doc" : "^1.0.0" },
-  "author": {
-    "name": "Vildan Softic",
-    "url": "https://github.com/zewa666"
-  },
-  "contributors": [],
-  "translators": [],
-  "keywords": ["Testing", "E2E", "Protractor"]
-}
+name: End to End Testing
+description: Testing front-end applications has become an important task for today's developers. Not only do you want to ensure that your application's internal code operates correctly, but you also want to validate the in-browser behavior. This article will show you how to achieve this by combining Aurelia and Protractor.
+author: Vildan Softic (https://github.com/zewa666)
 ---
 ## [What is E2E testing?](aurelia-doc://section/1/version/1.0.0)
 

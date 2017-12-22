@@ -1,17 +1,7 @@
 ---
-{
-  "name": "Testing Components",
-  "culture": "en-US",
-  "description": "An overview of how to unit test Custom Elements and Custom Attributes.",
-  "engines" : { "aurelia-doc" : "^1.0.0" },
-  "author": {
-  	"name": "Martin Gustafsson",
-  	"url": "http://github.com/martingust"
-  },
-  "contributors": [],
-  "translators": [],
-  "keywords": ["JavaScript", "Unit Testing", "Custom Elements", "Custom Attributes"]
-}
+name: Testing Components
+description: An overview of how to unit test Custom Elements and Custom Attributes.
+author: Martin Gustafsson (http://github.com/martingust)
 ---
 ## [Introduction](aurelia-doc://section/1/version/1.0.0)
 
