@@ -3,13 +3,13 @@ name: End to End Testing
 description: Testing front-end applications has become an important task for today's developers. Not only do you want to ensure that your application's internal code operates correctly, but you also want to validate the in-browser behavior. This article will show you how to achieve this by combining Aurelia and Protractor.
 author: Vildan Softic (https://github.com/zewa666)
 ---
-## [What is E2E testing?](aurelia-doc://section/1/version/1.0.0)
+## What is E2E testing?
 
 End-To-End (E2E) testing is all about testing your application against specific _scenarios_. From a requirements-engineering-perspective you'd call those _User Stories_. Essentially, these stories describe a series of actions a user performs to achieve a certain goal. So by assembling a bunch of these - referred to as a _test suite_ - you are able to verify that your web app acts as expected. The key to success, of course, lies in the amount and quality of tests written.   
 
 With E2E testing you are not interacting with the app's code per se, but with the app's interface. This is different than unit tests, which take care of isolated parts of the application - called _units_ - by verifying them through the removal or mocking of other parts. It's important to note that one method of testing does not replace the other, so don't take this article as an excuse to skip unit testing.
 
-## [How are E2E tests different?](aurelia-doc://section/2/version/1.0.0)
+## How are E2E tests different?
 
 One of the key differences when working with E2E tests is that all of your work is located in the browser, which naturally leads to writing a lot of _asynchronous code_. It doesn't matter whether you request a DOM Element, send some fake keystrokes or trigger a click, each of these actions needs to be automatically translated to understandable instructions and sent to the browser under test. So working with `Promises` becomes a major enabler when keeping track of deferred executions and responses.
 
@@ -19,7 +19,7 @@ When performing E2E tests you also need to take into consideration that you are 
 
 Last but not least, there is a much higher test code maintenance cost, compared to unit tests. The reason is that now, not only one component is tested exclusively, but rather the whole system at once. Imagine trying to fill out an input element with the id `txtFirstname`, just to realize the next day your tests fail because your fellow front-end designer decided to change the name to `txtFirstName`. This makes it clear that you must treat your test code like general application logic and give it all the love it deserves.
 
-## [Protractor](aurelia-doc://section/3/version/1.0.0)
+## Protractor
 
 Although the previous section may sound depressing, there is hope for developers in [Protractor](http://angular.github.io/protractor/#/), an End-To-End testing framework. Under the hood it's actually a Node.js application, which supports a wide variety of assertion/test libraries like [Jasmine](http://jasmine.github.io/), [Mocha](http://mochajs.org/) or [Cucumber](https://github.com/cucumber/cucumber-js).
 
@@ -34,7 +34,7 @@ Now the interesting thing is that instead of manually testing your application i
 
 Besides that, being a wrapper, it offers additional convenience features, not present in the vanilla WebDriverJS-API. One feature, perhaps the most important, is that it allows you to write asynchronous tests in a synchronous style. This means that Protractor will automatically execute the next task, the moment the previous pending tasks finish.
 
-## [A Basic Example](aurelia-doc://section/4/version/1.0.0)
+## A Basic Example
 
 To get a basic idea of how this works, take a look at the following example.
 
@@ -67,7 +67,7 @@ But sometimes you need to wait for a certain action to happen in the future. Aga
   </source-code>
 </code-listing>
 
-## [Accessing DOM Elements](aurelia-doc://section/5/version/1.0.0)
+## Accessing DOM Elements
 
 Great! So we know how to load a page. But how do we find DOM Elements and see whether they are rendered properly? Protractor provides the global object `element`, an `ElementFinder`, which offers a *locator factory* `by` used to define a way to search for elements. Let's take a look at the following example.
 
@@ -96,7 +96,7 @@ You may have noticed the method `beforeEach` at the top of the describe block. T
 >Info: Protractor Locators
 >You can find a full list of _locators_ [here](http://angular.github.io/protractor/#/locators). Just keep in mind that everything specific to AngularJS, like `binding` or `model` won't work with Aurelia Apps. We have our own helpers for that.
 
-## [Interacting with Forms](aurelia-doc://section/6/version/1.0.0)
+## Interacting with Forms
 
 Now we know how to work with general elements, but what about inputs? Wouldn't it be nice to fake data entries in order to verify the logic of a form? To do so, let's look at the next example. Our test will navigate to the Google homepage, search for a specific keyword, trigger the search and expect to see an element containing the given value.
 
@@ -120,7 +120,7 @@ Now we know how to work with general elements, but what about inputs? Wouldn't i
 
 First we navigate to the page using `browser.get` and look for an input with the name `q`. The `sendKeys` method now simulates the keystrokes for the keyword _Aurelia_. Afterwards we perform a search by clicking the button named `btnG`. Now we need to wait for Google to perform the search and render the result. We therefore leverage the `browser.sleep` method to give it some time. Finally we look for a link containing the word _Aurelia_.
 
-## [Protractor and Aurelia](aurelia-doc://section/7/version/1.0.0)
+## Protractor and Aurelia
 
 In order to work with Protractor, there is a little configuration that is necessary. This is done in a configuration file, e.g. protractor.conf.js, which sets up the basic information for Protractor so it can find our test files, start the standalone Selenium server and wire up the `JasmineOptions` for the console output. The Aurelia [Skeleton Navigation App](https://github.com/aurelia/skeleton-navigation) thankfully already shares a pre-configured setup. Let's take a look at it.
 
@@ -169,7 +169,7 @@ Since we'd like to start tests only when Aurelia is fully loaded, we leverage an
 
 This helper uses a Protractor feature to listen for a DOM event fired by Aurelia after initial view composition. By placing this in a `beforeEach` section, we ensure that none of the tests will be started before the async script successfully finishes.
 
-## [Testing the Aurelia Skeleton Navigation App](aurelia-doc://section/8/version/1.0.0)
+## Testing the Aurelia Skeleton Navigation App
 
 Besides having the configuration file set up, the Skeleton Navigation App also defines a set of demo tests to help you get started with testing your own page. First you'd need to download the App directly from our [Github-Repo](https://github.com/aurelia/skeleton-navigation) and follow the installation instructions. Afterwards, in order to start E2E testing, simply open up a console and run the following command to start up the built-in web server:
 
@@ -189,7 +189,7 @@ After that, open another console and hit the following command to start up the E
 
 You will find the demo spec in the folder `test/e2e/src/`.
 
-## [Page Objects](aurelia-doc://section/9/version/1.0.0)
+## Page Objects
 
 To conclude this article we're going to quickly look at how to structure tests. We organize our test methods using a pattern called _Page Objects_ (POs). What this means is that you try to group information about _how_ you access parts of the application into a separate class. This makes it simple to access specific elements multiple times. Now instead of repeating the `element.by.xxx` code over and over across multiple tests, we unify the access, making it easier to maintain and modify.
 
@@ -251,7 +251,7 @@ The second PO is all about the Welcome page.
   </source-code>
 </code-listing>
 
-## [Test Specification](aurelia-doc://section/10/version/1.0.0)
+## Test Specification
 
 The previously defined page objects can now be imported into our test specification by leveraging the ES6 `import` syntax. Using `beforeEach` we can instantiate the POs, navigate to the Web app and wait for the previously mentioned `aurelia-composed` event to start testing.
 
@@ -301,6 +301,6 @@ Our page object methods, in combination with Jasmine's BDD style assertions, mak
   </source-code>
 </code-listing>
 
-## [Summary](aurelia-doc://section/11/version/1.0.0)
+## Summary
 
 We hope you enjoyed this introduction to E2E Testing with Protractor and the Aurelia Framework. Time to start writing some tests!

@@ -3,11 +3,11 @@ name: Testing Components
 description: An overview of how to unit test Custom Elements and Custom Attributes.
 author: Martin Gustafsson (http://github.com/martingust)
 ---
-## [Introduction](aurelia-doc://section/1/version/1.0.0)
+## Introduction
 
 With the Component Tester you can easily stage a custom element or custom attribute in isolation inside a mini Aurelia application, assert how it responds to data-binding and assert its behavior throughout the component's lifecycle (bind, attached etc).
 
-## [Getting Started](aurelia-doc://section/2/version/1.0.0)
+## Getting Started
 
 If you are using JSPM:
 
@@ -23,7 +23,7 @@ npm install aurelia-testing
 
 Once you've got the library installed, you can use it in a unit test. In the following examples we will be using Jasmine, but any testing framework would work.
 
-## [Testing a Custom Element](aurelia-doc://section/3/version/1.0.0)
+## Testing a Custom Element
 
 Let's start with a simple custom element that we want to test:
 
@@ -106,7 +106,7 @@ Next, we come to the actual test where we call `create` on the `ComponentTester`
 Finally, we call `dispose` on our `ComponentTester` instance. This will clean up the DOM so our next test will start out with a clean document. That's pretty much all there is to it. Easy right? Imagine doing the same assert with stand alone unit tests that run outside of Aurelia. It would be pretty difficult, especially for a more complex component.
 
 
-## [Manually handling lifecycle](aurelia-doc://section/4/version/1.0.0)
+## Manually handling lifecycle
 
 When testing a component sometimes you want to have tests run at certain points of the lifecycle.  To do this we can tell the component we created that we will manually handle the lifecycle methods -
 
@@ -167,7 +167,7 @@ When testing a component sometimes you want to have tests run at certain points 
 
 As you see, the test helper lets you easily push components through their lifecycle, testing various aspects of it at each point along the way.
 
-## [Testing a Custom Attribute](aurelia-doc://section/5/version/1.0.0)
+## Testing a Custom Attribute
 
 Testing a Custom Attribute is not much different than testing a Custom Element. Let's look at how it's done by starting with a simple example custom attribute that lets you change the background color of the element it is placed on:
 
@@ -219,7 +219,7 @@ Now, let's assert that the element actually gets the background color it is boun
 
 As you can see, everything follows the same pattern we had for our custom element test. One exception is that we take advantage of the `element` property which gets provided by the `ComponentTester` instance. The `element` property is the actual HTML element that gets rendered. This can also be used when testing custom elements.
 
-## [Testing custom component with a real view-model](aurelia-doc://section/6/version/1.0.0)
+## Testing custom component with a real view-model
 
 If you want to test a custom component with a real view-model, mocking
 out all dependencies, you can do this as well.  A common scenario is
@@ -271,7 +271,7 @@ If the view model has a dependency on a class called Service for all backend com
   </source-code>
 </code-listing>
 
-## [Using a Real Parent View-model](aurelia-doc://section/7/version/1.0.0)
+## Using a Real Parent View-model
 
 If you want to test using a custom element inside of a real parent view-model this can be done just as easily.  This can be really helpful when needing to test the state of a parent that is affected by the child custom element or attribute -
 
@@ -331,7 +331,7 @@ Or if your view-model has dependencies to load through DI -
 
 Now the service dependency for `MyComponent` will be resolved through DI automatically.
 
-## [Improving Readability with Multi-line Strings](aurelia-doc://section/8/version/1.0.0)
+## Improving Readability with Multi-line Strings
 
 You can improve the readability of your complex views by using template literals in your tests -
 
@@ -361,7 +361,7 @@ You can improve the readability of your complex views by using template literals
   </source-code>
 </code-listing>
 
-## [Helpful Properties and Functions](aurelia-doc://section/9/version/1.0.0)
+## Helpful Properties and Functions
 
 The `ComponentTester` exposes a set of properties that can be handy when doing asserts or to stage a component in a specific way. Here's a list of what is available:
 
@@ -375,7 +375,7 @@ The `ComponentTester` exposes a set of properties that can be handy when doing a
 * `detached` - Manually handles `detached`.
 * `waitForElement` and `waitForElements` - Waits until one or several elements are present / absent. See below.
 
-## [Testing complex components](aurelia-doc://section/10/version/1.0.0)
+## Testing complex components
 
 In some cases, the tested element is not rendered yet when the `component.create()` promise is resolved, and therefore when the actual test starts. For these situations, `aurelia-testing` and `ComponentTester` expose helper methods and functions to wait for tested elements to be present in the page.
 
