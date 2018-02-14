@@ -36,7 +36,6 @@ To build the code, follow these steps.
 
 To run the unit tests, first ensure that you have followed the steps above in order to install all dependencies and successfully build the library. Once you have done that, you can run the tests by executing the following command:
 
-	```shell
-	npm test
-	```
-
+```shell
+npm test
+```
