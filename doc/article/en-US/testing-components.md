@@ -128,7 +128,7 @@ When testing a component sometimes you want to have tests run at certain points 
       it('can manually handle lifecycle', done => {
         let nameElement;
 
-        component.manuallyHandleLifecycle().create()
+        component.manuallyHandleLifecycle().create(bootstrap)
           .then(() => {
             nameElement = document.querySelector('.name');
             expect(nameElement.innerHTML).toBe(' ');
