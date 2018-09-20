@@ -23,7 +23,7 @@ export function waitFor(getter, options = { present: true, interval: 50, timeout
     return Promise.race([
         new Promise((_, rj) => setTimeout(() => {
             timedOut = true;
-            rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
+            rj(options.present ? 'Element not found' : 'Element not removed');
         }, options.timeout)),
         wait()
     ]);

@@ -34,7 +34,7 @@ function waitFor(getter, options) {
     return Promise.race([
         new Promise(function (_, rj) { return setTimeout(function () {
             timedOut = true;
-            rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
+            rj(options.present ? 'Element not found' : 'Element not removed');
         }, options.timeout); }),
         wait()
     ]);
