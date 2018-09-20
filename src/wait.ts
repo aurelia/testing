@@ -38,7 +38,7 @@ export function waitFor<T>(getter: () => T, options: {
     new Promise(
       (_, rj) => setTimeout(() => {
         timedOut = true;
-        rj(options.present ? 'Element not found' : 'Element not removed');
+        rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
       }, options.timeout)
     ),
     wait()
