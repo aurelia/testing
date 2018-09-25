@@ -1,5 +1,5 @@
 <a name="1.0.0-beta.5.0.0"></a>
-# [1.0.0-beta.5.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.4.0.0...1.0.0-beta.5.0.0) (2018-09-25)
+# [1.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.4.0.0...1.0.0) (2018-09-25)
 
 
 ### Bug Fixes
