@@ -1,3 +1,14 @@
+<a name="1.0.0-beta.5.0.0"></a>
+# [1.0.0-beta.5.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.4.0.0...1.0.0-beta.5.0.0) (2018-09-25)
+
+
+### Bug Fixes
+
+* **code example:** fix to the manually handling lifecycle example ([#82](https://github.com/aurelia/testing/issues/82)) ([b0fb939](https://github.com/aurelia/testing/commit/b0fb939))
+* **waitFor:** reject with Error rather than string ([#84](https://github.com/aurelia/testing/issues/84)) ([054dab5](https://github.com/aurelia/testing/commit/054dab5))
+
+
+
 <a name="1.0.0-beta.4.0.0"></a>
 # [1.0.0-beta.4.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.3.0.1...1.0.0-beta.4.0.0) (2017-11-06)
 

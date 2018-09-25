@@ -35,7 +35,7 @@ System.register([], function (exports_1, context_1) {
         return Promise.race([
             new Promise(function (_, rj) { return setTimeout(function () {
                 timedOut = true;
-                rj(options.present ? 'Element not found' : 'Element not removed');
+                rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
             }, options.timeout); }),
             wait()
         ]);
