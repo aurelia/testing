@@ -3,6 +3,7 @@ export * from './compile-spy';
 export * from './view-spy';
 export * from './component-tester';
 export * from './wait';
+export * from './update-bindings';
 
 export function configure(config: FrameworkConfiguration) {
   config.globalResources([

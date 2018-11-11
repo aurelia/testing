@@ -1,5 +1,6 @@
 import { StageComponent, ComponentTester } from '../src/component-tester';
 import { bootstrap } from 'aurelia-bootstrapper';
+import { updateBindings } from '../src/update-bindings';
 
 describe('SampleCustomComponent', () => {
   let component: ComponentTester;
@@ -16,6 +17,24 @@ describe('SampleCustomComponent', () => {
       .then(() => {
         const nameElement = document.querySelector('.firstName') as Element;
         expect(nameElement.innerHTML).toBe('Bob');
+        done();
+      })
+      .catch(error => {
+        fail(error);
+        done();
+      });
+  });
+
+  it('should render new first name after update using helper', done => {
+    component.create(bootstrap)
+      .then(() => {
+        const nameElement = document.querySelector('.firstName') as Element;
+        expect(nameElement.innerHTML).toBe('Bob');
+
+        component.viewModel.firstName = 'TheBuilder';
+        updateBindings();
+
+        expect(nameElement.innerHTML).toBe('TheBuilder');
         done();
       })
       .catch(error => {
