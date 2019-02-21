@@ -81,11 +81,12 @@
     }
   },
   "dependencies": {
-    "aurelia-templating": "^1.0.0",
-    "aurelia-framework": "^1.0.0",
     "aurelia-dependency-injection": "^1.0.0",
+    "aurelia-framework": "^1.0.0",
+    "aurelia-loader": "^1.0.1",
     "aurelia-logging": "^1.0.0",
-    "aurelia-pal": "^1.0.0"
+    "aurelia-pal": "^1.0.0",
+    "aurelia-templating": "^1.0.0"
   },
   "devDependencies": {
     "aurelia-bootstrapper": "^2.1.1",
