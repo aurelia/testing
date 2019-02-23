@@ -1,3 +1,4 @@
+import './setup';
 import { StageComponent, ComponentTester } from '../src/component-tester';
 import { bootstrap } from 'aurelia-bootstrapper';
 

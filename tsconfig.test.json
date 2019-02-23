@@ -7,7 +7,6 @@
       "es2017",
       "dom"
     ],
-    "outDir": "dist/test",
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -17,7 +16,6 @@
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "noEmitHelpers": false,
-    "stripInternal": true
   },
   "exclude": [
     ".vscode",

@@ -1,16 +1,21 @@
+import './setup';
 import { stubTemplateDependency, resetStubbedTemplateDependencies } from '../src/template-depency-stub';
 import { StageComponent } from '../src/component-tester';
 import { bootstrap } from 'aurelia-bootstrapper';
+import { PLATFORM } from 'aurelia-pal';
 
-describe('Template dependency stubbing', () => {
+PLATFORM.moduleName('test/resources/my-parent-component');
+PLATFORM.moduleName('test/resources/my-component');
+
+fdescribe('Template dependency stubbing', () => {
 
   describe('stubTemplateDependency()', () => {
 
     it('prevents the matching dependency from being loaded even if a template <require>s it', async () => {
-      stubTemplateDependency('dist/test/test/resources/my-component');
+      stubTemplateDependency('test/resources/my-component');
 
       const component = await StageComponent
-        .withResources('dist/test/test/resources/my-parent-component')
+        .withResources('test/resources/my-parent-component')
         .inView('<my-parent-component></my-parent-component>');
       await component.create(bootstrap);
 
