@@ -32,13 +32,13 @@ describe('Template dependency stubbing', () => {
     });
 
     it('discards html only custom element', async () => {
-      let component = await StageComponent
+      const component = await StageComponent
         .withResources('test/resources/html-only/html-only1.html')
         .inView('<html-only1></html-only1>')
         .stubDependencies('test/resources/html-only/html-only2.html');
       await component.create(bootstrap);
 
-      let subComponent = component.element as HTMLElement;
+      const subComponent = component.element as HTMLElement;
       expect(subComponent.tagName.toLowerCase()).toEqual('html-only1');
       expect(subComponent.textContent!.trim()).toEqual('html-only1');
 
@@ -60,6 +60,18 @@ describe('Template dependency stubbing', () => {
       expect(subComponent.textContent!.trim()).toEqual('Hello from Component tester');
 
       await component.dispose();
+
+      component = await StageComponent
+        .withResources()
+        .inView('<compose view="test/resources/composes/compose-1.html"></compose>')
+        .stubDependencies()
+        .boundTo({ message: 'Hello from Component tester' });
+
+      await component.create(bootstrap);
+      subComponent = component.element as HTMLElement;
+      expect(subComponent.textContent!.trim().includes('compose2')).toEqual(true, 'textContent.includes(compose2)');
+
+      await component.dispose();
     });
 
     it('discard <compose/> dependencies using view model', async () => {
@@ -72,7 +84,22 @@ describe('Template dependency stubbing', () => {
       await component.create(bootstrap);
       let subComponent = component.element as HTMLElement;
       expect(subComponent.tagName).toEqual('COMPOSE');
-      expect(subComponent.textContent!.trim()).toEqual('compose1');
+      expect(subComponent.textContent!.trim()).toEqual('compose1', 'textContent === compose1');
+
+      await component.dispose();
+
+      // Now test that stubbing one doesn't not affect other
+      component = await StageComponent
+        .withResources()
+        .inView('<compose view-model="test/resources/composes/compose-1"></compose>')
+        .boundTo({ message: 'Hello from Component tester' });
+
+      await component.create(bootstrap);
+      subComponent = component.element as HTMLElement;
+      expect(subComponent.tagName).toEqual('COMPOSE');
+      expect(subComponent.textContent!.trim().includes('Hello from Component tester')).toBe(false);
+      expect(subComponent.textContent!.trim().includes('compose1')).toBe(true, 'textContent.includes(compose1)');
+      expect(subComponent.textContent!.trim().includes('compose2')).toBe(true, 'textContent.includes(compose2)');
 
       await component.dispose();
     });

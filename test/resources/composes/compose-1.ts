@@ -1,3 +1,3 @@
 export class Compose1 {
-  message = 'compose1'
+  public message = 'compose1';
 }

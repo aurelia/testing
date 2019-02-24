@@ -10,7 +10,10 @@ import { DOM } from 'aurelia-pal';
 @customAttribute('compile-spy')
 export class CompileSpy {
 
-  static inject() {
+  /**
+   * @internal
+   */
+  public static inject() {
     return [DOM.Element, TargetInstruction];
   }
   /**
