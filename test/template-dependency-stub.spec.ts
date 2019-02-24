@@ -10,7 +10,7 @@ describe('Template dependency stubbing', () => {
       let component = await StageComponent
         .withResources('test/resources/my-parent-component')
         .inView('<my-parent-component></my-parent-component>')
-        .stubDependencies('test/resources/my-component');
+        .ignoreDependencies('test/resources/my-component');
       await component.create(bootstrap);
 
       let subComponent = component.element.firstElementChild as HTMLElement;
@@ -35,7 +35,7 @@ describe('Template dependency stubbing', () => {
       const component = await StageComponent
         .withResources('test/resources/html-only/html-only1.html')
         .inView('<html-only1></html-only1>')
-        .stubDependencies('test/resources/html-only/html-only2.html');
+        .ignoreDependencies('test/resources/html-only/html-only2.html');
       await component.create(bootstrap);
 
       const subComponent = component.element as HTMLElement;
@@ -52,7 +52,7 @@ describe('Template dependency stubbing', () => {
       let component = await StageComponent
         .withResources()
         .inView('<compose view="test/resources/composes/compose-1.html"></compose>')
-        .stubDependencies('test/resources/composes/compose-2')
+        .ignoreDependencies('test/resources/composes/compose-2')
         .boundTo({ message: 'Hello from Component tester' });
 
       await component.create(bootstrap);
@@ -64,7 +64,7 @@ describe('Template dependency stubbing', () => {
       component = await StageComponent
         .withResources()
         .inView('<compose view="test/resources/composes/compose-1.html"></compose>')
-        .stubDependencies()
+        .ignoreDependencies()
         .boundTo({ message: 'Hello from Component tester' });
 
       await component.create(bootstrap);
@@ -78,7 +78,7 @@ describe('Template dependency stubbing', () => {
       let component = await StageComponent
         .withResources()
         .inView('<compose view-model="test/resources/composes/compose-1"></compose>')
-        .stubDependencies('test/resources/composes/compose-2')
+        .ignoreDependencies('test/resources/composes/compose-2')
         .boundTo({ message: 'Hello from Component tester' });
 
       await component.create(bootstrap);
