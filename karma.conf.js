@@ -81,7 +81,7 @@ module.exports = function (config) {
     mime: {
       "text/x-typescript": ["ts"]
     },
-    reporters: ["mocha", "progress"],
+    reporters: ["mocha"],
     webpackServer: { noInfo: config.noInfo },
     
     browsers: browsers && browsers.length > 0 ? browsers : ['ChromeHeadlessOpt'],

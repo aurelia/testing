@@ -7,7 +7,7 @@ export function stubTemplateDependency(modulePath: string) {
 }
 
 export function resetStubbedTemplateDependencies() {
-  STUBBED_DEPENDENCIES.splice(0);
+  STUBBED_DEPENDENCIES.length = 0;
 }
 
 const templateDescriptor = Object.getOwnPropertyDescriptor(TemplateRegistryEntry.prototype, 'template')!;

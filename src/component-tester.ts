@@ -1,6 +1,8 @@
-import { View } from 'aurelia-templating';
-import { Aurelia, FrameworkConfiguration } from 'aurelia-framework';
+import { View, HtmlBehaviorResource, ResourceLoadContext, ViewStrategy } from 'aurelia-templating';
+import { Aurelia, FrameworkConfiguration, Loader, TemplateDependency, TemplateRegistryEntry, Container } from 'aurelia-framework';
 import { waitFor } from './wait';
+
+const originalLoad = HtmlBehaviorResource.prototype.load;
 
 interface AureliaWithRoot extends Aurelia {
   root: ViewWithControllers;
@@ -60,10 +62,45 @@ export class ComponentTester<T = any> {
 
   public create(bootstrap: (configure: (aurelia: Aurelia) => Promise<void>) => Promise<void>): Promise<void> {
     return bootstrap((aurelia: AureliaWithRoot) => {
+
+      const loader = aurelia.loader;
+      const newLoader = new (loader as any).constructor();
+      (loader as any).name = 'original-loader';
+
+      aurelia.loader = newLoader;
+      aurelia.container.unregister(Loader);
+      aurelia.container.registerInstance(Loader, newLoader);
+
       return Promise.resolve(this.configure(aurelia)).then(() => {
         if (this.resources) {
           aurelia.use.globalResources(this.resources);
         }
+
+        if (Array.isArray(this.stubbed)) {
+          const component = this;
+          const originalLoadtemplate = aurelia.loader.loadTemplate;
+          aurelia.loader.loadTemplate = async function(url: string): Promise<TemplateRegistryEntry> {
+            const entry = await originalLoadtemplate.call(this, url) as TemplateRegistryEntry;
+            entry.dependencies = entry.dependencies.filter((d: TemplateDependency) => !component.stubbed.includes(d.src));
+            return entry;
+          }
+
+          if (HtmlBehaviorResource.prototype.load === originalLoad) {
+            HtmlBehaviorResource.prototype.load = async function(
+              container: Container,
+              target: Function,
+              loadContext?: ResourceLoadContext,
+              viewStrategy?: ViewStrategy,
+              _transientView?: boolean
+            ) {
+              // reset every load
+              this.viewFactory = undefined;
+              const factory = await originalLoad.call(this, container, target, loadContext, viewStrategy, true);
+              return factory;
+            }
+          }
+        }
+
 
         return aurelia.start().then(() => {
           this.host = document.createElement('div');
@@ -95,6 +132,10 @@ export class ComponentTester<T = any> {
 
     this.rootView.detached();
     this.rootView.unbind();
+
+    if (HtmlBehaviorResource.prototype.load !== originalLoad) {
+      HtmlBehaviorResource.prototype.load = originalLoad;
+    }
 
     return (this.host.parentNode as Node).removeChild(this.host);
   }
@@ -150,5 +191,16 @@ export class ComponentTester<T = any> {
     timeout?: number
   }): Promise<NodeListOf<Element>> {
     return waitFor(() => this.element.querySelectorAll(selector) as NodeListOf<Element>, options);
+  }
+
+  stubbed: string[] = [];
+  public stubDependencies(...deps: string[]): this {
+    this.stubbed = deps;
+    // if (this.host === undefined || this.rootView === undefined) {
+    //   throw new Error(
+    //     'Cannot call ComponentTester.stubDependencies() before ComponentTester.create()'
+    //   );
+    // }
+    return this;
   }
 }
