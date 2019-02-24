@@ -2,7 +2,6 @@ import { FrameworkConfiguration } from 'aurelia-framework';
 export * from './compile-spy';
 export * from './view-spy';
 export * from './component-tester';
-export * from './template-depency-stub';
 export * from './wait';
 
 export function configure(config: FrameworkConfiguration) {

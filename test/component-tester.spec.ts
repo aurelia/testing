@@ -7,7 +7,7 @@ describe('ComponentTester', () => {
 
   beforeEach(() => {
     component = StageComponent
-      .withResources('dist/test/test/resources/my-component')
+      .withResources('test/resources/my-component')
       .inView(`<div>
                  <div class="component-tester-spec">
                    <my-component first-name.bind="firstName"></my-component>

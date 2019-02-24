@@ -1,6 +1,17 @@
 import { View, HtmlBehaviorResource, ResourceLoadContext, ViewStrategy } from 'aurelia-templating';
-import { Aurelia, FrameworkConfiguration, Loader, TemplateDependency, TemplateRegistryEntry, Container } from 'aurelia-framework';
+import {
+  Container
+} from 'aurelia-dependency-injection';
+import {  
+  TemplateDependency,
+  TemplateRegistryEntry,
+  Loader,
+} from 'aurelia-loader';
 import { waitFor } from './wait';
+import {
+  Aurelia,
+  FrameworkConfiguration,
+} from 'aurelia-framework';
 
 const originalLoad = HtmlBehaviorResource.prototype.load;
 
@@ -15,6 +26,10 @@ interface ViewWithControllers extends View {
 export class StageComponent {
   public static withResources<T = any>(resources: string | string[] = []): ComponentTester<T> {
     return new ComponentTester().withResources(resources);
+  }
+
+  public static inView<T = any>(html: string): ComponentTester<T> {
+    return new ComponentTester().inView(html);
   }
 }
 

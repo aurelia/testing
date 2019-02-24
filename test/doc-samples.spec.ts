@@ -7,7 +7,7 @@ describe('SampleCustomComponent', () => {
 
   beforeEach(() => {
     component = StageComponent
-      .withResources('dist/test/test/resources/my-component')
+      .withResources('test/resources/my-component')
       .inView('<my-component first-name.bind="firstName"></my-component>')
       .boundTo({ firstName: 'Bob' });
   });
@@ -35,7 +35,7 @@ describe('SampleCustomAttribute', () => {
 
   beforeEach(() => {
     component = StageComponent
-      .withResources('dist/test/test/resources/my-attribute')
+      .withResources('test/resources/my-attribute')
       .inView('<div my-attribute.bind="color">Bob</div>')
       .boundTo({ color: 'blue' });
   });
