@@ -5,12 +5,12 @@ import { bootstrap } from 'aurelia-bootstrapper';
 describe('Template dependency stubbing', () => {
 
   it('ignores deps per ComponentTesterInstance', async () => {
-    const component1 = await StageComponent
+    const component1 = StageComponent
       .withResources(['test/resources/no-deps/el1', 'test/resources/no-deps/el2'])
       .inView('<el1></el1><el2><el1></el1></el2>')
       .ignoreDependencies('test/resources/no-deps/el2');
 
-    const component2 = await StageComponent
+    const component2 = StageComponent
       .withResources(['test/resources/no-deps/el1', 'test/resources/no-deps/el2'])
       .inView('<el1></el1><el2><el1></el1></el2>')
       .ignoreDependencies('test/resources/no-deps/el1');
@@ -48,7 +48,7 @@ describe('Template dependency stubbing', () => {
 
   describe('with global resources', () => {
     it('discards globally declared resources', async () => {
-      const component = await StageComponent
+      const component = StageComponent
         .withResources(['test/resources/no-deps/el1', 'test/resources/no-deps/el2'])
         .inView('<el1></el1><el2><el1></el1></el2>')
         .ignoreDependencies('test/resources/no-deps/el2');
@@ -67,7 +67,7 @@ describe('Template dependency stubbing', () => {
     });
 
     it('works with all deps discarded', async () => {
-      const component = await StageComponent
+      const component = StageComponent
         .withResources(['test/resources/no-deps/el1', 'test/resources/no-deps/el2'])
         .inView('<el1></el1><el2><el1></el1></el2>')
         .ignoreDependencies('test/resources/no-deps/el1', 'test/resources/no-deps/el2');
@@ -85,7 +85,7 @@ describe('Template dependency stubbing', () => {
   describe('with normal custom element', () => {
 
     it('prevents the matching dependency from being loaded even if a template <require>s it', async () => {
-      let component = await StageComponent
+      let component = StageComponent
         .withResources('test/resources/my-parent-component')
         .inView('<my-parent-component></my-parent-component>')
         .ignoreDependencies('test/resources/my-component');
@@ -110,7 +110,7 @@ describe('Template dependency stubbing', () => {
     });
 
     it('discards html only custom element', async () => {
-      const component = await StageComponent
+      const component = StageComponent
         .withResources('test/resources/html-only/html-only1.html')
         .inView('<html-only1></html-only1>')
         .ignoreDependencies('test/resources/html-only/html-only2.html');
@@ -127,7 +127,7 @@ describe('Template dependency stubbing', () => {
   describe('with compose()', () => {
 
     it('discard <compose/> dependencies using view only', async () => {
-      let component = await StageComponent
+      let component = StageComponent
         .withResources()
         .inView('<compose view="test/resources/composes/compose-1.html"></compose>')
         .ignoreDependencies('test/resources/composes/compose-2')
@@ -139,7 +139,7 @@ describe('Template dependency stubbing', () => {
 
       await component.dispose();
 
-      component = await StageComponent
+      component = StageComponent
         .withResources()
         .inView('<compose view="test/resources/composes/compose-1.html"></compose>')
         .ignoreDependencies()
@@ -153,7 +153,7 @@ describe('Template dependency stubbing', () => {
     });
 
     it('discard <compose/> dependencies using view model', async () => {
-      let component = await StageComponent
+      let component = StageComponent
         .withResources()
         .inView('<compose view-model="test/resources/composes/compose-1"></compose>')
         .ignoreDependencies('test/resources/composes/compose-2')
@@ -167,7 +167,7 @@ describe('Template dependency stubbing', () => {
       await component.dispose();
 
       // Now test that stubbing one doesn't not affect other
-      component = await StageComponent
+      component = StageComponent
         .withResources()
         .inView('<compose view-model="test/resources/composes/compose-1"></compose>')
         .boundTo({ message: 'Hello from Component tester' });
