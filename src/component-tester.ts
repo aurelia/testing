@@ -249,7 +249,7 @@ export class ComponentTester<T = any> {
   /**
    * Register dependencies to be ignored while loading dependencies for custom element.
    *
-   * Only Works with dependencies registered via `<require from="...">` usage
+   * Only works with dependencies registered via `<require from="...">` usage
    * Dependencies are expected to be in absolute path
    */
   public ignoreDependencies(...deps: string[]): this {
