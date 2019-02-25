@@ -253,7 +253,7 @@ export class ComponentTester<T = any> {
    * Dependencies are expected to be in absolute path
    */
   public ignoreDependencies(...deps: string[]): this {
-    this.stubbed = deps;
+    this.stubbed = this.stubbed.concat(deps);
     return this;
   }
 }
