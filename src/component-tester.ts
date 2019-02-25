@@ -13,8 +13,6 @@ import {
   FrameworkConfiguration
 } from 'aurelia-framework';
 
-const originalLoad = HtmlBehaviorResource.prototype.load;
-
 interface AureliaWithRoot extends Aurelia {
   root: ViewWithControllers;
 }
@@ -56,7 +54,12 @@ export class ComponentTester<T = any> {
   private bindingContext: {};
   private rootView: View;
   private host: HTMLDivElement;
-  private stubbed: string[];
+  private stubbed: Set<string>;
+  private disposed: boolean;
+
+  constructor() {
+    this.stubbed = new Set();
+  }
 
   /**
    * Apply standard configuration to an Aurelia instance.
@@ -121,10 +124,11 @@ export class ComponentTester<T = any> {
       await this.configure(aurelia);
 
       if (this.resources) {
-        aurelia.use.globalResources(this.resources);
+        const resources = Array.isArray(this.resources) ? this.resources : [this.resources];
+        aurelia.use.globalResources(resources.filter(r => typeof r === 'string' ? !this.stubbed.has(r) : true));
       }
 
-      if (Array.isArray(this.stubbed)) {
+      if (this.stubbed.size > 0) {
         // tslint:disable-next-line:no-this-assignment
         const component = this;
         const originalLoadtemplate = aurelia.loader.loadTemplate;
@@ -132,25 +136,11 @@ export class ComponentTester<T = any> {
         // overriding loadTemplate method of loader to filter stubbed dependencies
         aurelia.loader.loadTemplate = async function(url: string): Promise<TemplateRegistryEntry> {
           const entry = await originalLoadtemplate.call(this, url) as TemplateRegistryEntry;
-          entry.dependencies = entry.dependencies.filter((d: TemplateDependency) => !component.stubbed.includes(d.src));
+          entry.dependencies = entry.dependencies.filter((d: TemplateDependency) => !component.stubbed.has(d.src));
           return entry;
         };
 
-        if (HtmlBehaviorResource.prototype.load === originalLoad) {
-          HtmlBehaviorResource.prototype.load = async function(
-            container: Container,
-            // tslint:disable-next-line:ban-types
-            target: Function,
-            loadContext?: ResourceLoadContext,
-            viewStrategy?: ViewStrategy
-          ) {
-            // reset every load
-            // so that subsequent load of the same class in different tests won't get old view factory
-            // with modified dependencies
-            this.viewFactory = undefined;
-            return originalLoad.call(this, container, target, loadContext, viewStrategy, true);
-          };
-        }
+        overrideHtmlBehaviorResourceLoad();
       }
 
       await aurelia.start();
@@ -182,12 +172,16 @@ export class ComponentTester<T = any> {
         'Cannot call ComponentTester.dispose() before ComponentTester.create()'
       );
     }
+    if (this.disposed === true) {
+      throw new Error('This ComponentTester instance has already been disposed. Did you call dispose() twice?');
+    }
+    this.disposed = true;
 
     this.rootView.detached();
     this.rootView.unbind();
 
-    if (HtmlBehaviorResource.prototype.load !== originalLoad) {
-      HtmlBehaviorResource.prototype.load = originalLoad;
+    if (this.stubbed.size > 0) {
+      restoreHtmlBehaviorResourceLoad();
     }
 
     return (this.host.parentNode as Node).removeChild(this.host);
@@ -253,7 +247,34 @@ export class ComponentTester<T = any> {
    * Dependencies are expected to be in absolute path
    */
   public ignoreDependencies(...deps: string[]): this {
-    this.stubbed = this.stubbed.concat(deps);
+    for (const dep of deps) {
+      this.stubbed.add(dep);
+    }
     return this;
   }
 }
+
+const originalLoad = HtmlBehaviorResource.prototype.load;
+const overrideHtmlBehaviorResourceLoad = () => {
+  if (HtmlBehaviorResource.prototype.load === originalLoad) {
+    HtmlBehaviorResource.prototype.load = async function(
+      container: Container,
+      // tslint:disable-next-line:ban-types
+      target: Function,
+      loadContext?: ResourceLoadContext,
+      viewStrategy?: ViewStrategy
+    ) {
+      // reset every load
+      // so that subsequent load of the same class in different tests won't get old view factory
+      // with modified dependencies
+      this.viewFactory = undefined;
+      return originalLoad.call(this, container, target, loadContext, viewStrategy, true);
+    };
+  }
+};
+
+const restoreHtmlBehaviorResourceLoad = () => {
+  if (HtmlBehaviorResource.prototype.load !== originalLoad) {
+    HtmlBehaviorResource.prototype.load = originalLoad;
+  }
+};
