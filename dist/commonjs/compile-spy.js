@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var aurelia_templating_1 = require("aurelia-templating");
-var aurelia_dependency_injection_1 = require("aurelia-dependency-injection");
 var aurelia_logging_1 = require("aurelia-logging");
 var aurelia_pal_1 = require("aurelia-pal");
 /**
@@ -24,9 +23,14 @@ var CompileSpy = /** @class */ (function () {
     function CompileSpy(element, instruction) {
         aurelia_logging_1.getLogger('compile-spy').info(element.toString(), instruction);
     }
+    /**
+     * @internal
+     */
+    CompileSpy.inject = function () {
+        return [aurelia_pal_1.DOM.Element, aurelia_templating_1.TargetInstruction];
+    };
     CompileSpy = __decorate([
-        aurelia_templating_1.customAttribute('compile-spy'),
-        aurelia_dependency_injection_1.inject(aurelia_pal_1.DOM.Element, aurelia_templating_1.TargetInstruction)
+        aurelia_templating_1.customAttribute('compile-spy')
     ], CompileSpy);
     return CompileSpy;
 }());

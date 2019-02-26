@@ -11,7 +11,7 @@ export declare class ViewSpy {
      * Creates a new instance of ViewSpy.
      */
     constructor();
-    private _log(lifecycleName, context?);
+    private _log;
     /**
      * Invoked when the target view is created.
      * @param view The target view.

@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { customAttribute, TargetInstruction } from 'aurelia-templating';
-import { inject } from 'aurelia-dependency-injection';
 import { getLogger } from 'aurelia-logging';
 import { DOM } from 'aurelia-pal';
 /**
@@ -22,9 +21,14 @@ var CompileSpy = /** @class */ (function () {
     function CompileSpy(element, instruction) {
         getLogger('compile-spy').info(element.toString(), instruction);
     }
+    /**
+     * @internal
+     */
+    CompileSpy.inject = function () {
+        return [DOM.Element, TargetInstruction];
+    };
     CompileSpy = __decorate([
-        customAttribute('compile-spy'),
-        inject(DOM.Element, TargetInstruction)
+        customAttribute('compile-spy')
     ], CompileSpy);
     return CompileSpy;
 }());
