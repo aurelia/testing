@@ -1,6 +1,7 @@
 import './setup';
 import { StageComponent } from '../src/component-tester';
 import { bootstrap } from 'aurelia-bootstrapper';
+import { PLATFORM } from 'aurelia-pal';
 
 describe('Template dependency stubbing', () => {
 
@@ -181,5 +182,41 @@ describe('Template dependency stubbing', () => {
 
       await component.dispose();
     });
+  });
+});
+
+fdescribe('sample', () => {
+
+  it('should render without and with child', async () => {
+    let component;
+    let subComponent;
+
+    PLATFORM.moduleName('test/resources2/parent-component');
+    PLATFORM.moduleName('test/resources2/child-component');
+
+    // First block, ignoring Child-component
+    component = await StageComponent
+    .withResources('test/resources2/parent-component')
+    .inView('<parent-component></parent-component>')
+    .ignoreDependencies('test/resources2/child-component');
+
+    await component.create(bootstrap);
+    subComponent = component.element as HTMLElement;
+    expect(subComponent.textContent!.trim()).toEqual('Parent');
+    expect(subComponent.textContent!.trim()).not.toContain('Child');
+
+    await component.dispose();
+
+    // Second block, keeping Child-component
+    component = await StageComponent
+      .withResources('test/resources2/parent-component')
+      .inView('<parent-component></parent-component>');
+    // .ignoreDependencies('child-component');
+
+    await component.create(bootstrap);
+    subComponent = component.element as HTMLElement;
+    expect(subComponent.textContent!.trim()).toContain('Child');
+
+    component.dispose();
   });
 });
