@@ -1,5 +1,4 @@
 import { customAttribute, TargetInstruction } from 'aurelia-templating';
-import { inject } from 'aurelia-dependency-injection';
 import { getLogger } from 'aurelia-logging';
 import { DOM } from 'aurelia-pal';
 
@@ -9,8 +8,14 @@ import { DOM } from 'aurelia-pal';
  * parsed bindings, behaviors and event handers for the targeted element.
  */
 @customAttribute('compile-spy')
-@inject(DOM.Element, TargetInstruction)
 export class CompileSpy {
+
+  /**
+   * @internal
+   */
+  public static inject() {
+    return [DOM.Element, TargetInstruction];
+  }
   /**
    * Creates and instanse of CompileSpy.
    * @param element target element on where attribute is placed on.

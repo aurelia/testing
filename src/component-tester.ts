@@ -1,6 +1,17 @@
-import { View } from 'aurelia-templating';
-import { Aurelia, FrameworkConfiguration } from 'aurelia-framework';
+import { View, HtmlBehaviorResource, ResourceLoadContext, ViewStrategy } from 'aurelia-templating';
+import {
+  Container
+} from 'aurelia-dependency-injection';
+import {
+  TemplateDependency,
+  TemplateRegistryEntry,
+  Loader
+} from 'aurelia-loader';
 import { waitFor } from './wait';
+import {
+  Aurelia,
+  FrameworkConfiguration
+} from 'aurelia-framework';
 
 interface AureliaWithRoot extends Aurelia {
   root: ViewWithControllers;
@@ -10,9 +21,23 @@ interface ViewWithControllers extends View {
   controllers: {viewModel: any}[];
 }
 
+/**
+ * Staging Component helpers to bring up basic setup for a test with ComponentTester
+ */
 export class StageComponent {
+
+  /**
+   * Create a ComponentTester for the given resources
+   */
   public static withResources<T = any>(resources: string | string[] = []): ComponentTester<T> {
     return new ComponentTester().withResources(resources);
+  }
+
+  /**
+   * Create a ComponentTester instance for the given html
+   */
+  public static inView<T = any>(html: string): ComponentTester<T> {
+    return new ComponentTester().inView(html);
   }
 }
 
@@ -29,25 +54,46 @@ export class ComponentTester<T = any> {
   private bindingContext: {};
   private rootView: View;
   private host: HTMLDivElement;
+  private stubbed: Set<string>;
+  private disposed: boolean;
 
+  constructor() {
+    this.stubbed = new Set();
+  }
+
+  /**
+   * Apply standard configuration to an Aurelia instance.
+   */
   public configure(aurelia: Aurelia): FrameworkConfiguration {
     return aurelia.use.standardConfiguration();
   }
 
+  /**
+   * Register a configure function to be applied when this ComponentTester initializes
+   */
   public bootstrap(configure: (aurelia: Aurelia) => FrameworkConfiguration) {
     this.configure = configure;
   }
 
+  /**
+   * Register resources to be applied globally when this ComponentTester initializes
+   */
   public withResources(resources: string | string[]): ComponentTester<T> {
     this.resources = resources;
     return this;
   }
 
+  /**
+   * Register test application html to create, when this ComponentTester initializes
+   */
   public inView(html: string): ComponentTester<T> {
     this.html = html;
     return this;
   }
 
+  /**
+   * Register an object to be used as root viewModel, when this ComponentTester initializes
+   */
   public boundTo(bindingContext: {}): ComponentTester<T> {
     this.bindingContext = bindingContext;
     return this;
@@ -58,43 +104,85 @@ export class ComponentTester<T = any> {
     return this;
   }
 
+  /**
+   * Initializes the test scene, with given bootstrapping function
+   */
   public create(bootstrap: (configure: (aurelia: Aurelia) => Promise<void>) => Promise<void>): Promise<void> {
-    return bootstrap((aurelia: AureliaWithRoot) => {
-      return Promise.resolve(this.configure(aurelia)).then(() => {
-        if (this.resources) {
-          aurelia.use.globalResources(this.resources);
-        }
+    return bootstrap(async (aurelia: AureliaWithRoot) => {
 
-        return aurelia.start().then(() => {
-          this.host = document.createElement('div');
-          this.host.innerHTML = this.html;
+      const loader = aurelia.loader;
+      const newLoader = new (loader as any).constructor();
 
-          document.body.appendChild(this.host);
+      // remove reference to old loader
+      aurelia.container.unregister(Loader);
+      // register new loader in both property loader and container
+      // property for framework configuration
+      aurelia.loader = newLoader;
+      // container for templating resources/templating
+      aurelia.container.registerInstance(Loader, newLoader);
 
-          return aurelia.enhance(this.bindingContext, this.host).then(() => {
-            this.rootView = aurelia.root;
-            this.element = this.host.firstElementChild as Element;
+      await this.configure(aurelia);
 
-            if (aurelia.root.controllers.length) {
-              this.viewModel = aurelia.root.controllers[0].viewModel;
-            }
+      if (this.resources) {
+        const resources = Array.isArray(this.resources) ? this.resources : [this.resources];
+        aurelia.use.globalResources(resources.filter(r => typeof r === 'string' ? !this.stubbed.has(r) : true));
+      }
 
-            return new Promise(resolve => setTimeout(() => resolve(), 0)) as Promise<void>;
-          });
-        });
-      });
+      if (this.stubbed.size > 0) {
+        // tslint:disable-next-line:no-this-assignment
+        const component = this;
+        const originalLoadtemplate = aurelia.loader.loadTemplate;
+
+        // overriding loadTemplate method of loader to filter stubbed dependencies
+        aurelia.loader.loadTemplate = async function(url: string): Promise<TemplateRegistryEntry> {
+          const entry = await originalLoadtemplate.call(this, url) as TemplateRegistryEntry;
+          entry.dependencies = entry.dependencies.filter((d: TemplateDependency) => !component.stubbed.has(d.src));
+          return entry;
+        };
+
+        overrideHtmlBehaviorResourceLoad();
+      }
+
+      await aurelia.start();
+      this.host = document.createElement('div');
+      this.host.innerHTML = this.html;
+
+      document.body.appendChild(this.host);
+
+      await aurelia.enhance(this.bindingContext, this.host);
+
+      const rootView: ViewWithControllers = aurelia.root;
+      this.rootView = rootView;
+      this.element = this.host.firstElementChild as Element;
+
+      if (rootView.controllers.length) {
+        this.viewModel = rootView.controllers[0].viewModel;
+      }
+
+      return new Promise(resolve => setTimeout(() => resolve(), 0)) as Promise<void>;
     });
   }
 
+  /**
+   * Dispose this ComponentTester instance, detaching the view and unbind all bindings
+   */
   public dispose(): Element {
     if (this.host === undefined || this.rootView === undefined) {
       throw new Error(
         'Cannot call ComponentTester.dispose() before ComponentTester.create()'
       );
     }
+    if (this.disposed === true) {
+      throw new Error('This ComponentTester instance has already been disposed. Did you call dispose() twice?');
+    }
+    this.disposed = true;
 
     this.rootView.detached();
     this.rootView.unbind();
+
+    if (this.stubbed.size > 0) {
+      restoreHtmlBehaviorResourceLoad();
+    }
 
     return (this.host.parentNode as Node).removeChild(this.host);
   }
@@ -151,4 +239,42 @@ export class ComponentTester<T = any> {
   }): Promise<NodeListOf<Element>> {
     return waitFor(() => this.element.querySelectorAll(selector) as NodeListOf<Element>, options);
   }
+
+  /**
+   * Register dependencies to be ignored while loading dependencies for custom element.
+   *
+   * Only works with dependencies registered via `<require from="...">` usage
+   * Dependencies are expected to be in absolute path
+   */
+  public ignoreDependencies(...deps: string[]): this {
+    for (const dep of deps) {
+      this.stubbed.add(dep);
+    }
+    return this;
+  }
 }
+
+const originalLoad = HtmlBehaviorResource.prototype.load;
+const overrideHtmlBehaviorResourceLoad = () => {
+  if (HtmlBehaviorResource.prototype.load === originalLoad) {
+    HtmlBehaviorResource.prototype.load = async function(
+      container: Container,
+      // tslint:disable-next-line:ban-types
+      target: Function,
+      loadContext?: ResourceLoadContext,
+      viewStrategy?: ViewStrategy
+    ) {
+      // reset every load
+      // so that subsequent load of the same class in different tests won't get old view factory
+      // with modified dependencies
+      this.viewFactory = undefined;
+      return originalLoad.call(this, container, target, loadContext, viewStrategy, true);
+    };
+  }
+};
+
+const restoreHtmlBehaviorResourceLoad = () => {
+  if (HtmlBehaviorResource.prototype.load !== originalLoad) {
+    HtmlBehaviorResource.prototype.load = originalLoad;
+  }
+};

@@ -12,28 +12,27 @@ var TemplateServerMiddlewareFactory = function (config) {
   };
 }
 
+const path = require('path');
+const { AureliaPlugin } = require('aurelia-webpack-plugin');
+
 module.exports = function (config) {
+  const browsers = config.browsers;
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'requirejs'],
-
-    beforeMiddleware: ['template-server'],
-    plugins: config.plugins.concat([
-      {'middleware:template-server': ['factory', TemplateServerMiddlewareFactory]}
-    ]),
+    frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
     files: [
-      'dist/test/test/setup.js',
-      { pattern: 'dist/test/**/*.js', included: false, watched: true },
-      { pattern: '**/*.html', included: false, watched: true },
-      { pattern: 'node_modules/**/*.js', included: false, watched: false },
+      // 'dist/test/test/setup.js',
+      // { pattern: 'dist/test/**/*.js', included: false, watched: true },
+      // { pattern: '**/*.html', included: false, watched: true },
+      // { pattern: 'node_modules/**/*.js', included: false, watched: false },
+      'test/**/*.spec.ts'
     ],
 
 
@@ -41,16 +40,64 @@ module.exports = function (config) {
     exclude: [],
 
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      "**/*.ts": ["webpack"]
     },
-
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    webpack: {
+      mode: "development",
+      resolve: {
+        extensions: [".ts", ".js"],
+        modules: ["src", "node_modules"],
+        alias: {
+          src: path.resolve(__dirname, "src"),
+          test: path.resolve(__dirname, "test")
+        }
+      },
+      devtool: "cheap-module-eval-source-map",
+      module: {
+        rules: [
+          {
+            test: /\.ts$/,
+            loader: "ts-loader",
+            exclude: /node_modules/,
+            options: {
+              configFile: path.resolve(__dirname, "tsconfig.test.json")
+            }
+          },
+          {
+            test: /\.html?$/i,
+            loader: "html-loader"
+          }
+        ]
+      },
+      plugins: [
+        new AureliaPlugin({
+          aureliaApp: undefined,
+          dist: "es2015",
+          noWebpackLoader: true
+        })
+      ]
+    },
+    mime: {
+      "text/x-typescript": ["ts"]
+    },
+    reporters: ["mocha"],
+    webpackServer: { noInfo: config.noInfo },
+    
+    browsers: browsers && browsers.length > 0 ? browsers : ['ChromeHeadlessOpt'],
+    customLaunchers: {
+      ChromeDebugging: {
+        base: "Chrome",
+        flags: [...commonChromeFlags, "--remote-debugging-port=9333"],
+        debug: true
+      },
+      ChromeHeadlessOpt: {
+        base: 'ChromeHeadless',
+        flags: [
+          ...commonChromeFlags
+        ]
+      }
+    },
 
 
     // web server port
@@ -69,12 +116,6 @@ module.exports = function (config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
-
-
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
@@ -84,3 +125,28 @@ module.exports = function (config) {
     concurrency: Infinity
   })
 }
+
+const commonChromeFlags = [
+  '--no-default-browser-check',
+  '--no-first-run',
+  '--no-managed-user-acknowledgment-check',
+  '--no-pings',
+  '--no-sandbox',
+  '--no-wifi',
+  '--no-zygote',
+  '--disable-background-networking',
+  '--disable-background-timer-throttling',
+  '--disable-backing-store-limit',
+  '--disable-boot-animation',
+  '--disable-breakpad',
+  '--disable-cache',
+  '--disable-clear-browsing-data-counters',
+  '--disable-cloud-import',
+  '--disable-component-extensions-with-background-pages',
+  '--disable-contextual-search',
+  '--disable-default-apps',
+  '--disable-extensions',
+  '--disable-infobars',
+  '--disable-translate',
+  '--disable-sync'
+];

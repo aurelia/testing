@@ -1,3 +1,4 @@
+import './setup';
 import { StageComponent, ComponentTester } from '../src/component-tester';
 import { bootstrap } from 'aurelia-bootstrapper';
 
@@ -6,7 +7,7 @@ describe('ComponentTester', () => {
 
   beforeEach(() => {
     component = StageComponent
-      .withResources('dist/test/test/resources/my-component')
+      .withResources('test/resources/my-component')
       .inView(`<div>
                  <div class="component-tester-spec">
                    <my-component first-name.bind="firstName"></my-component>
@@ -18,34 +19,18 @@ describe('ComponentTester', () => {
       .boundTo({ firstName: 'Bob' });
   });
 
-  it('should wait for a child element', (done) => {
-    component.create(bootstrap)
-      .then(() => {
-        return component.waitForElement('my-component');
-      })
-      .then((element) => {
-        expect(element.nodeName.toLowerCase()).toEqual('my-component');
-        done();
-      })
-      .catch(error => {
-        fail(error);
-        done();
-      });
+  it('should wait for a child element', async () => {
+    await component.create(bootstrap);
+    const element = await component.waitForElement('my-component');
+
+    expect(element.nodeName.toLowerCase()).toEqual('my-component');
   });
 
-  it('should wait for multiple child elements', (done) => {
-    component.create(bootstrap)
-      .then(() => {
-        return component.waitForElements('.component-tester-spec');
-      })
-      .then((elements) => {
-        expect(elements.length).toBe(2);
-        done();
-      })
-      .catch(error => {
-        fail(error);
-        done();
-      });
+  it('should wait for multiple child elements', async () => {
+    await component.create(bootstrap);
+    const elements = await component.waitForElements('.component-tester-spec');
+
+    expect(elements.length).toBe(2);
   });
 
   afterEach(() => {
