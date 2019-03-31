@@ -185,7 +185,7 @@ describe('Template dependency stubbing', () => {
   });
 });
 
-fdescribe('sample', () => {
+describe('sample', () => {
 
   it('should render without and with child', async () => {
     let component;
