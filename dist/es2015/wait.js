@@ -20,10 +20,12 @@ export function waitFor(getter, options = { present: true, interval: 50, timeout
         }
         return new Promise(rs => setTimeout(rs, options.interval)).then(wait);
     }
+    // We generate the error here to capture the stack trace, but we will only throw it if it times out
+    const timeoutError = new Error(options.present ? 'Element not found' : 'Element not removed');
     return Promise.race([
         new Promise((_, rj) => setTimeout(() => {
             timedOut = true;
-            rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
+            rj(timeoutError);
         }, options.timeout)),
         wait()
     ]);
