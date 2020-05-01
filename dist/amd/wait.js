@@ -32,10 +32,12 @@ define(["require", "exports"], function (require, exports) {
             }
             return new Promise(function (rs) { return setTimeout(rs, options.interval); }).then(wait);
         }
+        // We generate the error here to capture the stack trace, but we will only throw it if it times out
+        var timeoutError = new Error(options.present ? 'Element not found' : 'Element not removed');
         return Promise.race([
             new Promise(function (_, rj) { return setTimeout(function () {
                 timedOut = true;
-                rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
+                rj(timeoutError);
             }, options.timeout); }),
             wait()
         ]);
