@@ -38,22 +38,22 @@ export class ComponentTester<T = any> {
     this.configure = configure;
   }
 
-  public withResources(resources: string | string[]): ComponentTester<T> {
+  public withResources(resources: string | string[]): this {
     this.resources = resources;
     return this;
   }
 
-  public inView(html: string): ComponentTester<T> {
+  public inView(html: string): this {
     this.html = html;
     return this;
   }
 
-  public boundTo(bindingContext: {}): ComponentTester<T> {
+  public boundTo(bindingContext: {}): this {
     this.bindingContext = bindingContext;
     return this;
   }
 
-  public manuallyHandleLifecycle(): ComponentTester<T> {
+  public manuallyHandleLifecycle(): this {
     this._prepareLifecycle();
     return this;
   }
