@@ -1,5 +1,5 @@
 import { View } from 'aurelia-templating';
-import { Aurelia, FrameworkConfiguration } from 'aurelia-framework';
+import type { Aurelia, FrameworkConfiguration } from 'aurelia-framework';
 import { waitFor } from './wait';
 
 interface AureliaWithRoot extends Aurelia {
@@ -25,7 +25,7 @@ export class ComponentTester<T = any> {
   public viewModel: T;
 
   private html: string;
-  private resources: string | string[] = [];
+  private resources: string | Function | (string | Function)[] = [];
   private bindingContext: {};
   private rootView: View;
   private host: HTMLDivElement;

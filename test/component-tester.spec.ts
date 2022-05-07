@@ -1,12 +1,14 @@
-import { StageComponent, ComponentTester } from '../src/component-tester';
+import { StageComponent, ComponentTester } from '../src/aurelia-testing';
 import { bootstrap } from 'aurelia-bootstrapper';
+import { PLATFORM } from 'aurelia-pal';
 
 describe('ComponentTester', () => {
   let component: ComponentTester;
 
   beforeEach(() => {
+    debugger
     component = StageComponent
-      .withResources('dist/test/test/resources/my-component')
+      .withResources(PLATFORM.moduleName('resources/my-component'))
       .inView(`<div>
                  <div class="component-tester-spec">
                    <my-component first-name.bind="firstName"></my-component>
@@ -27,10 +29,7 @@ describe('ComponentTester', () => {
         expect(element.nodeName.toLowerCase()).toEqual('my-component');
         done();
       })
-      .catch(error => {
-        fail(error);
-        done();
-      });
+      .catch(done.fail);
   });
 
   it('should wait for multiple child elements', (done) => {
@@ -42,10 +41,7 @@ describe('ComponentTester', () => {
         expect(elements.length).toBe(2);
         done();
       })
-      .catch(error => {
-        fail(error);
-        done();
-      });
+      .catch(done.fail);
   });
 
   afterEach(() => {
