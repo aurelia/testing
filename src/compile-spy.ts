@@ -1,5 +1,4 @@
-import { customAttribute, TargetInstruction } from 'aurelia-templating';
-import { inject } from 'aurelia-dependency-injection';
+import { type IStaticResourceConfig, TargetInstruction } from 'aurelia-templating';
 import { getLogger } from 'aurelia-logging';
 import { DOM } from 'aurelia-pal';
 
@@ -8,9 +7,14 @@ import { DOM } from 'aurelia-pal';
  * TargetInstruction into the debug console, giving you insight into all the
  * parsed bindings, behaviors and event handers for the targeted element.
  */
-@customAttribute('compile-spy')
-@inject(DOM.Element, TargetInstruction)
 export class CompileSpy {
+  /** @internal */
+  static get inject() { return [DOM.Element, TargetInstruction]; }
+  /** @internal */
+  static $resource: IStaticResourceConfig = {
+    type: 'attribute',
+    name: 'compile-spy'
+  }
   /**
    * Creates and instanse of CompileSpy.
    * @param element target element on where attribute is placed on.
