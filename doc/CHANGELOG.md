@@ -1,3 +1,20 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.1.0](https://github.com/aurelia/testing/compare/1.0.0...1.1.0) (2022-05-07)
+
+
+### Features
+
+* **component-tester:** allow using class in withResources ([#100](https://github.com/aurelia/testing/issues/100)) ([3b71fbc](https://github.com/aurelia/testing/commit/3b71fbc9b74a3ed2b6b0f23c35bccb875cee804e))
+* **component-tester:** use `this` type in return type to enable better extension ([#97](https://github.com/aurelia/testing/issues/97))
+
+### Bug Fixes
+
+* Resolve security dependency issues
+
+
 <a name="1.0.0-beta.5.0.0"></a>
 # [1.0.0](https://github.com/aurelia/testing/compare/1.0.0-beta.4.0.0...1.0.0) (2018-09-25)
 
