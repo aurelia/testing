@@ -16,10 +16,10 @@ export declare class ComponentTester<T = any> {
     private host;
     configure(aurelia: Aurelia): FrameworkConfiguration;
     bootstrap(configure: (aurelia: Aurelia) => FrameworkConfiguration): void;
-    withResources(resources: string | string[]): this;
-    inView(html: string): this;
-    boundTo(bindingContext: {}): this;
-    manuallyHandleLifecycle(): this;
+    withResources(resources: string | string[]): ComponentTester<T>;
+    inView(html: string): ComponentTester<T>;
+    boundTo(bindingContext: {}): ComponentTester<T>;
+    manuallyHandleLifecycle(): ComponentTester<T>;
     create(bootstrap: (configure: (aurelia: Aurelia) => Promise<void>) => Promise<void>): Promise<void>;
     dispose(): Element;
     private _prepareLifecycle();
