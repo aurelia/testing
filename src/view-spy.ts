@@ -1,4 +1,4 @@
-import { customAttribute } from 'aurelia-templating';
+import { IStaticResourceConfig } from 'aurelia-templating';
 import { getLogger, Logger } from 'aurelia-logging';
 
 /**
@@ -6,8 +6,12 @@ import { getLogger, Logger } from 'aurelia-logging';
  * to the debug console, giving you insight into the live View instance, including
  * all child views, live bindings, behaviors and more.
  */
-@customAttribute('view-spy')
 export class ViewSpy {
+  static $resource: IStaticResourceConfig = {
+    type: 'attribute',
+    name: 'view-spy'
+  };
+
   private logger: Logger;
   private value: any;
   private view: any;

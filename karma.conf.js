@@ -1,86 +1,71 @@
-// Karma configuration
-// Generated on Sun Aug 28 2016 19:03:27 GMT-0400 (Eastern Daylight Time)
+const path = require('path');
+const { AureliaPlugin } = require('aurelia-webpack-plugin');
 
-var TemplateServerMiddlewareFactory = function (config) {
-  var TEMPLATE_REQUEST_REGEXP = /^\/base\/dist\/test\/.+\.html$/i;
-  return function (req, res, next) {
-    if(TEMPLATE_REQUEST_REGEXP.test(req.url)) {
-      req.url = req.url.replace(/^\/base\/dist\/test\//, '/base/');
-    }
-
-    next();
-  };
-}
-
-module.exports = function (config) {
+module.exports = function(config) {
+  const browsers = config.browsers;
   config.set({
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
-
-
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'requirejs'],
-
-    beforeMiddleware: ['template-server'],
-    plugins: config.plugins.concat([
-      {'middleware:template-server': ['factory', TemplateServerMiddlewareFactory]}
-    ]),
-
-    // list of files / patterns to load in the browser
-    files: [
-      'dist/test/test/setup.js',
-      { pattern: 'dist/test/**/*.js', included: false, watched: true },
-      { pattern: '**/*.html', included: false, watched: true },
-      { pattern: 'node_modules/**/*.js', included: false, watched: false },
-    ],
-
-
-    // list of files to exclude
-    exclude: [],
-
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    frameworks: ["jasmine"],
+    files: ["test/**/*.spec.ts"],
     preprocessors: {
+      "test/**/*.spec.ts": ["webpack", "sourcemap"],
     },
-
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
-
-
-    // web server port
-    port: 9876,
-
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
-
-
-    // start these browsers
-    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
-
-
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
+    webpack: {
+      mode: "development",
+      entry: 'test/setup.ts',
+      watch: false,
+      resolve: {
+        extensions: [".ts", ".js"],
+        modules: ["src", 'test', "node_modules"].map(m => path.resolve(__dirname, m)),
+        alias: {
+          src: path.resolve(__dirname, "src"),
+          test: path.resolve(__dirname, 'test'),
+          'aurelia-testing': path.resolve(__dirname, 'src/aurelia-testing.ts')
+        }
+      },
+      devtool: browsers.indexOf('ChromeDebugging') > -1 ? 'eval-source-map' : 'inline-source-map',
+      module: {
+        rules: [
+          {
+            test: /\.ts$/,
+            loader: "ts-loader",
+            exclude: /node_modules/,
+            options: {
+              compilerOptions: {
+                sourceMap: true
+              }
+            }
+          },
+          {
+            test: /\.html$/i,
+            loader: 'html-loader'
+          }
+        ]
+      },
+      plugins: [
+        new AureliaPlugin({ aureliaApp: undefined, dist: 'es2015' })
+      ]
+    },
+    mime: {
+      "text/x-typescript": ["ts"]
+    },
+    reporters: ["mocha"],
+    webpackServer: { noInfo: config.noInfo },
+    browsers: browsers && browsers.length > 0 ? browsers : ['ChromeHeadless'],
+    customLaunchers: {
+      ChromeDebugging: {
+        base: "Chrome",
+        flags: ["--remote-debugging-port=9333"],
+        debug: true
+      }
+    },
     singleRun: false,
-
-    // Concurrency level
-    // how many browser should be started simultaneous
-    concurrency: Infinity
-  })
-}
+    mochaReporter: {
+      ignoreSkipped: true
+    },
+    webpackMiddleware: {
+      logLevel: 'silent'
+    },
+  });
+};

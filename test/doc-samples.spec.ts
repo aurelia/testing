@@ -1,12 +1,13 @@
-import { StageComponent, ComponentTester } from '../src/component-tester';
+import { StageComponent, ComponentTester } from '../src/aurelia-testing';
 import { bootstrap } from 'aurelia-bootstrapper';
+import { PLATFORM } from 'aurelia-pal';
 
 describe('SampleCustomComponent', () => {
   let component: ComponentTester;
 
   beforeEach(() => {
     component = StageComponent
-      .withResources('dist/test/test/resources/my-component')
+      .withResources(PLATFORM.moduleName('resources/my-component'))
       .inView('<my-component first-name.bind="firstName"></my-component>')
       .boundTo({ firstName: 'Bob' });
   });
@@ -18,10 +19,7 @@ describe('SampleCustomComponent', () => {
         expect(nameElement.innerHTML).toBe('Bob');
         done();
       })
-      .catch(error => {
-        fail(error);
-        done();
-      });
+      .catch(done.fail);
   });
 
   afterEach(() => {
@@ -34,7 +32,7 @@ describe('SampleCustomAttribute', () => {
 
   beforeEach(() => {
     component = StageComponent
-      .withResources('dist/test/test/resources/my-attribute')
+      .withResources(PLATFORM.moduleName('resources/my-attribute'))
       .inView('<div my-attribute.bind="color">Bob</div>')
       .boundTo({ color: 'blue' });
   });
@@ -45,10 +43,7 @@ describe('SampleCustomAttribute', () => {
         expect((component.element as HTMLElement).style.backgroundColor).toBe('blue');
         done();
       })
-      .catch(error => {
-        fail(error);
-        done();
-      });
+      .catch(done.fail);
   });
 
   afterEach(() => {
