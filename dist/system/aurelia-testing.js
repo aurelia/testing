@@ -109,10 +109,11 @@ System.register(['aurelia-templating', 'aurelia-logging', 'aurelia-pal'], (funct
                     }
                     return new Promise(function (rs) { return setTimeout(rs, options.interval); }).then(wait);
                 }
+                var timeoutError = new Error(options.present ? 'Element not found' : 'Element not removed');
                 return Promise.race([
                     new Promise(function (_, rj) { return setTimeout(function () {
                         timedOut = true;
-                        rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
+                        rj(timeoutError);
                     }, options.timeout); }),
                     wait()
                 ]);

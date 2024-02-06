@@ -59,10 +59,11 @@ function waitFor(getter, options = { present: true, interval: 50, timeout: 5000 
         }
         return new Promise(rs => setTimeout(rs, options.interval)).then(wait);
     }
+    const timeoutError = new Error(options.present ? 'Element not found' : 'Element not removed');
     return Promise.race([
         new Promise((_, rj) => setTimeout(() => {
             timedOut = true;
-            rj(new Error(options.present ? 'Element not found' : 'Element not removed'));
+            rj(timeoutError);
         }, options.timeout)),
         wait()
     ]);
